@@ -32,9 +32,7 @@ public class When_sending_messages {
     @Test
     public void message_are_stored_in_database() {
         SendMessageCommand cmd = sendMessage();
-
-        ChatMessageRepository repo = persistenceSupport.getChatMessageRepository();
-        ChatMessage last = repo.query().skip(repo.query().count() - 1).findFirst().get();
+        ChatMessage last = getLastMessage();
 
         Assertions.assertEquals(cmd.user, last.getUser());
         Assertions.assertEquals(cmd.message, last.getMessage());
@@ -43,8 +41,15 @@ public class When_sending_messages {
     @Test
     public void notification_is_sent_to_all_users() {
         SendMessageCommand cmd = sendMessage();
+        ChatMessage last = getLastMessage();
 
-        Mockito.verify(notificationService).notifyNewMessages();
+        Mockito.verify(notificationService).notifyNewMessage(last);
+    }
+
+    private ChatMessage getLastMessage() {
+        ChatMessageRepository repo = persistenceSupport.getChatMessageRepository();
+        ChatMessage last = repo.query().skip(repo.query().count() - 1).findFirst().get();
+        return last;
     }
 
     private SendMessageCommand sendMessage() {
