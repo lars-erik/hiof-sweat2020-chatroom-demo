@@ -1,4 +1,4 @@
-package org.hiof.chatroom.core;
+package org.hiof.chatroom.commands;
 
 public class SendMessageCommand {
     public String user;
