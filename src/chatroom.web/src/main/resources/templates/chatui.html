@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-<form>
+<form onsubmit="return false;">
 <div class="form-group">
     <label for="username">Username:</label>
     <input type="text" class="form-control" name="username" id="username"/>
@@ -16,8 +16,21 @@
     <label for="message">Message:</label>
     <textarea class="form-control" name="message" id="message"></textarea>
 </div>
+<div class="form-group">
+    <button class="btn btn-primary" id="sendBtn">Send</button>
+</div>
 </form>
 <pre th:text="${message}"></pre>
 </div>
+
+<script type="text/javascript">
+    const sendBtn = document.getElementById("sendBtn"),
+          usernameInput = document.getElementById("username"),
+          messageInput = document.getElementById("message");
+    sendBtn.addEventListener("click", function() {
+        fetch("/postmessage?username=" + usernameInput.value + "&message=" + messageInput.value);
+    });
+</script>
+
 </body>
 </html>
