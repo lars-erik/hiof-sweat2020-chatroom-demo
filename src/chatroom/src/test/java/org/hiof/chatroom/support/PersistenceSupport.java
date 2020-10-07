@@ -10,7 +10,7 @@ public class PersistenceSupport {
     UnitOfWork uow;
     ChatMessageRepository repo;
 
-    public PersistenceSupport() {
+    public PersistenceSupport() throws Exception {
         factory = new FakePersistenceFactory();
         uow = factory.createUnitOfWork();
         repo = factory.createChatMessageRepository(uow);

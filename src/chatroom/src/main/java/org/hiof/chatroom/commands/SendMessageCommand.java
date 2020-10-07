@@ -10,12 +10,12 @@ public class SendMessageCommand {
     public String user;
     public String message;
 
-    public void execute() {
+    public void execute() throws Exception {
         UnitOfWork uow = PersistenceFactory.Instance.createUnitOfWork();
         ChatMessageRepository repo = PersistenceFactory.Instance.createChatMessageRepository(uow);
 
         ChatMessage msg = new ChatMessage();
-        msg.setId(UUID.randomUUID());
+        msg.setId(UUID.randomUUID().toString());
         msg.setUser(user);
         msg.setMessage(message);
 

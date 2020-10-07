@@ -20,7 +20,7 @@ public class FakeChatMessageRepository implements ChatMessageRepository {
     }
 
     @Override
-    public ChatMessage get(UUID id) {
+    public ChatMessage get(String id) {
         return messages.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
     }
 }

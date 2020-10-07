@@ -1,6 +1,7 @@
 package org.hiof.chatroom.web;
 
 import org.hiof.chatroom.core.ChatMessage;
+import org.hiof.chatroom.database.DatabaseManager;
 import org.hiof.chatroom.fakes.FakePersistenceFactory;
 import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.notification.NotificationServiceFactory;
@@ -11,13 +12,16 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan
 public class WebApplication {
 
-    public static void main(String[] args) {
-        ConfigurableApplicationContext ctx = SpringApplication.run(WebApplication.class, args);
+    public static void main(String[] args) throws ClassNotFoundException {
+        final ConfigurableApplicationContext ctx = SpringApplication.run(WebApplication.class, args);
 
-        PersistenceFactory.Instance = new FakePersistenceFactory();
+        Class.forName("org.sqlite.JDBC");
+        DatabaseManager.ensureDatabase("./db/chat.db");
+
+        PersistenceFactory.Instance = new org.hiof.chatroom.database.PersistenceFactory();
+
         NotificationServiceFactory.Instance = new NotificationServiceFactory() {
             @Override
             public NotificationService getService() {
