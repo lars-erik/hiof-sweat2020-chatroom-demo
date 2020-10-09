@@ -101,7 +101,7 @@
         <dependency>
             <groupId>com.github.gwenn</groupId>
             <artifactId>sqlite-dialect</artifactId>
-            <version>master</version>
+            <version>0.2.0-local</version>
         </dependency>
 
         <dependency>

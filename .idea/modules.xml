@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/src/chatroom/chatroom.iml" filepath="$PROJECT_DIR$/src/chatroom/chatroom.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/chatroom.database/chatroom.database.iml" filepath="$PROJECT_DIR$/src/chatroom.database/chatroom.database.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/chatroom.web/chatroom.web.iml" filepath="$PROJECT_DIR$/src/chatroom.web/chatroom.web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/sqllite-dialect/sqllite-dialect.iml" filepath="$PROJECT_DIR$/src/sqllite-dialect/sqllite-dialect.iml" />
     </modules>
   </component>
 </project>

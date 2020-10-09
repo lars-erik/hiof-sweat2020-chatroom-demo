@@ -6,6 +6,7 @@
         <option value="$PROJECT_DIR$/src/chatroom/pom.xml" />
         <option value="$PROJECT_DIR$/src/chatroom.web/pom.xml" />
         <option value="$PROJECT_DIR$/src/chatroom.database/pom.xml" />
+        <option value="$PROJECT_DIR$/src/sqllite-dialect/pom.xml" />
       </list>
     </option>
   </component>
