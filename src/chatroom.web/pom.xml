@@ -106,17 +106,18 @@
 
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>chatroom.database</artifactId>
+            <artifactId>chatroom</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>chatroom</artifactId>
+            <artifactId>chatroom.database</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+
     </dependencies>
 
     <build>

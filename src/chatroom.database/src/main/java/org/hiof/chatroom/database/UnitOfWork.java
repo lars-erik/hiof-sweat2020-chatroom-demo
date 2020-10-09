@@ -2,6 +2,7 @@ package org.hiof.chatroom.database;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataBuilder;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -17,11 +18,14 @@ public class UnitOfWork implements org.hiof.chatroom.persistence.UnitOfWork {
 
     public UnitOfWork() throws Exception {
         this.session = getSessionFactory().openSession();
+        this.transaction = this.session.beginTransaction();
     }
 
     @Override
     public void saveChanges() {
         getSession().flush();
+        this.transaction.commit();
+        this.transaction = this.session.beginTransaction();
     }
 
     @Override
@@ -30,6 +34,7 @@ public class UnitOfWork implements org.hiof.chatroom.persistence.UnitOfWork {
     }
 
     private final Session session;
+    private Transaction transaction;
 
     static SessionFactory sessionFactory;
     static SessionFactory getSessionFactory() throws Exception {

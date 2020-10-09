@@ -21,6 +21,7 @@ public class SendMessageCommand {
 
         repo.add(msg);
         uow.saveChanges();
+        uow.close();
 
         NotificationServiceFactory.Instance.getService().notifyNewMessage(msg);
     }
