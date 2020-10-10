@@ -6,7 +6,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
-          <factory-entry name="sqllite-dialect" />
+          <factory-entry name="sqlite-dialect" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>

@@ -35,7 +35,6 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="org.hibernate:hibernate-core:5.1.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.3.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.3.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-logging:2.3.4.RELEASE" level="project" />
@@ -113,7 +112,8 @@
     <orderEntry type="library" name="Maven: org.webjars:bootstrap:3.3.7" level="project" />
     <orderEntry type="library" name="Maven: org.webjars:jquery:3.1.1-1" level="project" />
     <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.32.3.2" level="project" />
-    <orderEntry type="module" module-name="sqllite-dialect" />
+    <orderEntry type="module" module-name="chatroom" />
+    <orderEntry type="module" module-name="chatroom.database" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:5.4.22.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.3.2.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.persistence:javax.persistence-api:2.2" level="project" />
@@ -131,7 +131,6 @@
     <orderEntry type="library" name="Maven: com.sun.istack:istack-commons-runtime:3.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.staxex:stax-ex:1.8" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" level="project" />
-    <orderEntry type="module" module-name="chatroom" />
-    <orderEntry type="module" module-name="chatroom.database" />
+    <orderEntry type="module" module-name="sqlite-dialect" />
   </component>
 </module>
