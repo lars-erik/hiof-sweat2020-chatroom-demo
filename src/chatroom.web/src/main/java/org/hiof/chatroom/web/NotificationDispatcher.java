@@ -35,7 +35,6 @@ public class NotificationDispatcher {
             headerAccessor.setSessionId(listener);
             headerAccessor.setLeaveMutable(true);
 
-//            int value = (int) Math.round(Math.random() * 100d);
             template.convertAndSendToUser(
                     listener,
                     "/topic/chat",

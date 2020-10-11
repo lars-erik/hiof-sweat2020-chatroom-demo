@@ -4,8 +4,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hiof.chatroom.core.ChatMessage;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ChatMessageRepository implements org.hiof.chatroom.persistence.ChatMessageRepository {
@@ -32,5 +33,15 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Chat
     @Override
     public ChatMessage get(String id) {
         return unitOfWork.getSession().get(ChatMessage.class, id);
+    }
+
+    public List<String> getLastMessages() {
+        long count = query().count();
+        List<String> lastMessages = query()
+                .skip(Math.max(count - 10, 0))
+                .map(msg -> msg.getUser() + ": " + msg.getMessage())
+                .collect(Collectors.toList());
+        Collections.reverse(lastMessages);
+        return lastMessages;
     }
 }
