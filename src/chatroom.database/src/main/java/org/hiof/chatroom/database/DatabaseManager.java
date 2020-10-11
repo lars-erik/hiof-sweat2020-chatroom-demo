@@ -1,14 +1,24 @@
 package org.hiof.chatroom.database;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseManager {
-    public static void ensureDatabase(String path) {
+    public static void ensureDatabase(String path, Boolean delete) {
         String url = "jdbc:sqlite:" + path;
 
+        if (delete) {
+            try {
+                File dbFile = new File(path);
+                dbFile.delete();
+            }
+            catch(Exception ex) {
+                // Ignore file not exists
+            }
+        }
 
         try {
             Class.forName("org.sqlite.JDBC");

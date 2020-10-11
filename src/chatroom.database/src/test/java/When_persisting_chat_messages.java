@@ -10,7 +10,7 @@ import java.util.UUID;
 public class When_persisting_chat_messages {
     @Test
     public void stores_message() throws Exception {
-        DatabaseManager.ensureDatabase("./db/chat-test.db");
+        DatabaseManager.ensureDatabase("./db/chat-test.db", true);
         UnitOfWork uow = new UnitOfWork();
         ChatMessageRepository repo = new ChatMessageRepository(uow);
         ChatMessage msg = new ChatMessage();

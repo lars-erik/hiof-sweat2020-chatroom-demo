@@ -37,11 +37,11 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Chat
 
     public List<String> getLastMessages() {
         long count = query().count();
-        List<String> lastMessages = query()
-                .skip(Math.max(count - 10, 0))
-                .map(msg -> msg.getUser() + ": " + msg.getMessage())
+        List<String> sorted = query()
+                .sorted((x, y) -> Long.compare(y.getTime().getEpochSecond(), x.getTime().getEpochSecond()))
+                .limit(20)
+                .map(msg -> msg.toString())
                 .collect(Collectors.toList());
-        Collections.reverse(lastMessages);
-        return lastMessages;
+        return sorted;
     }
 }

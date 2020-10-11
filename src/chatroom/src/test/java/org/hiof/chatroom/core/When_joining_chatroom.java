@@ -17,7 +17,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class When_joining_chatroom {
-    PersistenceSupport persistenceSupport;
+    protected PersistenceSupport persistenceSupport;
 
     @BeforeEach
     public void initialize_persistence() throws Exception {

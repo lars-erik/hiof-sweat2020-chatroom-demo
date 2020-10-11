@@ -20,7 +20,7 @@ public class WebApplication {
         final ConfigurableApplicationContext ctx = SpringApplication.run(WebApplication.class, args);
 
         Class.forName("org.sqlite.JDBC");
-        DatabaseManager.ensureDatabase("./db/chat.db");
+        DatabaseManager.ensureDatabase("./db/chat.db", false);
 
         PersistenceFactory.Instance = new org.hiof.chatroom.database.PersistenceFactory();
 

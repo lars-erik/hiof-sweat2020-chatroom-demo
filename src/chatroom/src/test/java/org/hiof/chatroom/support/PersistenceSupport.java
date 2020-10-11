@@ -6,9 +6,9 @@ import org.hiof.chatroom.persistence.PersistenceFactory;
 import org.hiof.chatroom.persistence.UnitOfWork;
 
 public class PersistenceSupport {
-    PersistenceFactory factory;
-    private UnitOfWork uow;
-    ChatMessageRepository repo;
+    protected PersistenceFactory factory;
+    protected UnitOfWork uow;
+    protected ChatMessageRepository repo;
 
     public PersistenceSupport() throws Exception {
         factory = new FakePersistenceFactory();
