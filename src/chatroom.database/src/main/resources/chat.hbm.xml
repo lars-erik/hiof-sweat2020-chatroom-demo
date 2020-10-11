@@ -16,6 +16,7 @@
         <id name="id" column="Id">
             <generator class="assigned"/>
         </id>
+        <property name="time" column="Time"/>
         <property name="user" column="UserName" length="50"/>
         <property name="message" column="Message" length="512"/>
     </class>

@@ -11,7 +11,7 @@ import org.mockito.Mockito;
 import java.time.Instant;
 
 public class When_sending_messages {
-    PersistenceSupport persistenceSupport;
+    protected PersistenceSupport persistenceSupport;
     NotificationService notificationService;
 
     @BeforeEach
@@ -34,6 +34,11 @@ public class When_sending_messages {
     @AfterEach
     public void reset_time() {
         TimeFactory.reset();
+    }
+
+    @AfterEach
+    public void cleanup_database() {
+        persistenceSupport.cleanup();
     }
 
     @Test
@@ -59,8 +64,9 @@ public class When_sending_messages {
     public void notification_is_sent_to_all_users() throws Exception {
         SendMessageCommand cmd = sendMessage();
         ChatMessage last = getLastMessage();
+        String expected = last.toString();
 
-        Mockito.verify(notificationService).notifyNewMessage(last);
+        Mockito.verify(notificationService).notifyNewMessage(Mockito.argThat(x -> expected.equals(x.toString())));
     }
 
     private ChatMessage getLastMessage() {

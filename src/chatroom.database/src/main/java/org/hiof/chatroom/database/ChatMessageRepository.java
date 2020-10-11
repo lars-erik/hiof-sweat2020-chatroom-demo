@@ -36,7 +36,6 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Chat
     }
 
     public List<String> getLastMessages() {
-        long count = query().count();
         List<String> sorted = query()
                 .sorted((x, y) -> Long.compare(y.getTime().getEpochSecond(), x.getTime().getEpochSecond()))
                 .limit(20)

@@ -29,4 +29,8 @@ public class PersistenceSupport {
     public void setUow(UnitOfWork uow) {
         this.uow = uow;
     }
+
+    public void cleanup() {
+        uow.close();
+    }
 }
