@@ -1,6 +1,12 @@
 package org.hiof.chatroom.core;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 import java.util.UUID;
 
 public class ChatMessage {
@@ -51,8 +57,13 @@ public class ChatMessage {
         this.time = time;
     }
 
+    DateTimeFormatter formatter = DateTimeFormatter
+            .ofPattern("HH:mm:ss")
+            .withZone(ZoneId.of("UTC"));
+
     @Override
     public String toString() {
-        return getUser() + ": " + getMessage();
+        String timeString = formatter.toFormat().format(getTime());
+        return String.format("%1$s <%2$s>: %3$s", timeString, getUser(), getMessage());
     }
 }

@@ -19,28 +19,29 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Chat
 
     @Override
     public void add(ChatMessage message) {
-        unitOfWork.getSession().save(message);
+        getSession().save(message);
     }
 
     @Override
     public Stream<ChatMessage> query() {
-        Session session = unitOfWork.getSession();
-        Query query = session.createQuery("SELECT msg FROM ChatMessage msg");
-        List<ChatMessage> msgs = query.list();
-        return msgs.stream();
+        Session session = getSession();
+        org.hibernate.query.Query<ChatMessage> query = session.createQuery("SELECT msg FROM ChatMessage msg", ChatMessage.class);
+        return query.stream();
     }
 
     @Override
     public ChatMessage get(String id) {
-        return unitOfWork.getSession().get(ChatMessage.class, id);
+        return getSession().get(ChatMessage.class, id);
     }
 
     public List<String> getLastMessages() {
-        List<String> sorted = query()
-                .sorted((x, y) -> Long.compare(y.getTime().getEpochSecond(), x.getTime().getEpochSecond()))
-                .limit(20)
-                .map(msg -> msg.toString())
-                .collect(Collectors.toList());
-        return sorted;
+        org.hibernate.query.Query<ChatMessage> query = getSession()
+                .createQuery("SELECT msg FROM ChatMessage msg ORDER BY msg.time DESC", ChatMessage.class)
+                .setMaxResults(20);
+        return query.stream().map(x -> x.toString()).collect(Collectors.toList());
+    }
+
+    private Session getSession() {
+        return unitOfWork.getSession();
     }
 }
