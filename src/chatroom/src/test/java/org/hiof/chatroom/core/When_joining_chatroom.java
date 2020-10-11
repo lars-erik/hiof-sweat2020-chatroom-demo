@@ -11,8 +11,10 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class When_joining_chatroom {
     PersistenceSupport persistenceSupport;
@@ -28,18 +30,19 @@ public class When_joining_chatroom {
         try {
             ChatMessageRepository repo = persistenceSupport.getChatMessageRepository();
 
-            List<ChatMessage> messages = new ArrayList<>();
+            List<String> messages = new ArrayList<>();
             for (int i = 0; i < 21; i++) {
-                final String timeStamp = "2020-10-01T23:00:" + String.format("00", i) + "Z";
+                final String timeStamp = "2020-10-01T23:00:" + String.format("%02d", i) + "Z";
                 TimeFactory.nowFactory = () -> Instant.parse(timeStamp);
                 ChatMessage msg = new ChatMessage(UUID.randomUUID().toString(), TimeFactory.now(), "Luke", "Nooo! " + i);
-                messages.add(msg);
+                messages.add(msg.toString());
                 repo.add(msg);
             }
             uow.saveChanges();
+            Collections.reverse(messages);
 
             List<String> lastMessages = repo.getLastMessages();
-            Assertions.assertArrayEquals(messages.stream().skip(1).toArray(), lastMessages.toArray());
+            Assertions.assertArrayEquals(messages.stream().limit(20).toArray(), lastMessages.toArray());
         }
         finally {
             uow.close();
