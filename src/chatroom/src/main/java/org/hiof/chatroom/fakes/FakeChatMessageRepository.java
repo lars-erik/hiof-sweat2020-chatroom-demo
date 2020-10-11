@@ -3,6 +3,7 @@ package org.hiof.chatroom.fakes;
 import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.persistence.ChatMessageRepository;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,7 +29,8 @@ public class FakeChatMessageRepository implements ChatMessageRepository {
     public List<String> getLastMessages() {
         long count = query().count();
         List<String> lastMessages = query()
-                .skip(Math.max(count - 10, 0))
+                .sorted((x, y) -> Long.compare(x.getTime().getEpochSecond(), y.getTime().getEpochSecond()))
+                .skip(Math.max(count - 20, 0))
                 .map(msg -> msg.getUser() + ": " + msg.getMessage())
                 .collect(Collectors.toList());
         Collections.reverse(lastMessages);

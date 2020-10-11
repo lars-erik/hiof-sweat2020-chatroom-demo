@@ -9,6 +9,16 @@ public class ChatMessage {
     private String user;
     private String message;
 
+    public ChatMessage() {
+    }
+
+    public ChatMessage(String id, Instant time, String user, String message) {
+        this.id = id;
+        this.time = time;
+        this.user = user;
+        this.message = message;
+    }
+
     public String getId() {
         return id;
     }
