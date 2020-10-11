@@ -1,9 +1,11 @@
 package org.hiof.chatroom.core;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public class ChatMessage {
     private String id;
+    private Instant time;
     private String user;
     private String message;
 
@@ -29,5 +31,13 @@ public class ChatMessage {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Instant getTime() {
+        return time;
+    }
+
+    public void setTime(Instant time) {
+        this.time = time;
     }
 }

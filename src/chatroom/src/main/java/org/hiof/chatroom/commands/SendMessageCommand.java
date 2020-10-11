@@ -1,6 +1,7 @@
 package org.hiof.chatroom.commands;
 
 import org.hiof.chatroom.core.ChatMessage;
+import org.hiof.chatroom.core.TimeFactory;
 import org.hiof.chatroom.notification.NotificationServiceFactory;
 import org.hiof.chatroom.persistence.*;
 
@@ -18,6 +19,7 @@ public class SendMessageCommand {
         msg.setId(UUID.randomUUID().toString());
         msg.setUser(user);
         msg.setMessage(message);
+        msg.setTime(TimeFactory.nowFactory.call());
 
         repo.add(msg);
         uow.saveChanges();
