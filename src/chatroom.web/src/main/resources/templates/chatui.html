@@ -54,9 +54,9 @@
             console.log('Connected: ' + frame);
             stompClient.send("/app/start", {});
             stompClient.subscribe('/user/topic/chat', function (payload) {
-                let message = JSON.parse(payload.body),
+                let message = payload.body,
                     el = document.createElement("pre");
-                el.innerText = message.user + ": " + message.message;
+                el.innerText = message;
                 log.insertBefore(el, log.firstChild);
             });
         });

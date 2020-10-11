@@ -38,7 +38,7 @@ public class NotificationDispatcher {
             template.convertAndSendToUser(
                     listener,
                     "/topic/chat",
-                    message,
+                    message.toString(),
                     headerAccessor.getMessageHeaders());
         }
     }

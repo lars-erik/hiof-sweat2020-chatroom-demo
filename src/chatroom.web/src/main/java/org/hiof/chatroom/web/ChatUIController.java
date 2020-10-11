@@ -3,6 +3,7 @@ package org.hiof.chatroom.web;
 import org.hiof.chatroom.commands.SendMessageCommand;
 import org.hiof.chatroom.persistence.ChatMessageRepository;
 import org.hiof.chatroom.persistence.PersistenceFactory;
+import org.hiof.chatroom.persistence.UnitOfWork;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -22,10 +23,10 @@ public class ChatUIController {
 
     @GetMapping("/")
     public String chatUI(Model model) throws Exception {
-        ChatMessageRepository chatMessageRepository = PersistenceFactory.Instance.createChatMessageRepository(
-                PersistenceFactory.Instance.createUnitOfWork()
-        );
+        UnitOfWork unitOfWork = PersistenceFactory.Instance.createUnitOfWork();
+        ChatMessageRepository chatMessageRepository = PersistenceFactory.Instance.createChatMessageRepository(unitOfWork);
         List<String> lastMessages = chatMessageRepository.getLastMessages();
+        unitOfWork.close();
 
         model.addAttribute("log", lastMessages);
         return "chatui";
