@@ -20,7 +20,7 @@
         <property name="connection.password">hiofhiof</property>
 
         <!-- JDBC connection pool (use the built-in) -->
-        <property name="connection.pool_size">1</property>
+        <property name="connection.pool_size">2</property>
 
         <!-- SQL dialect -->
         <property name="dialect">org.sqlite.hibernate.dialect.SQLiteDialect</property>
@@ -32,7 +32,7 @@
         <property name="show_sql">true</property>
 
         <!-- Drop and re-createImpl the database schema on startup -->
-        <property name="hbm2ddl.auto">update</property>
+        <property name="hbm2ddl.auto">create</property>
 
         <mapping resource="chat.hbm.xml"/>
 

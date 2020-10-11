@@ -55,6 +55,10 @@ public class When_sending_messages {
         TimeFactory.nowFactory = () -> Instant.parse("2020-10-01T23:59:59Z");
 
         SendMessageCommand cmd = sendMessage();
+
+        persistenceSupport.cleanup();
+        initialize_persistence();
+
         ChatMessage last = getLastMessage();
 
         Assertions.assertEquals("2020-10-01T23:59:59Z", last.getTime().toString());
