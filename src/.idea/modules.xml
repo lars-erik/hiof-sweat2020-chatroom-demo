@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/chatroom/chatroom.iml" filepath="$PROJECT_DIR$/chatroom/chatroom.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chatroom-parent.iml" filepath="$PROJECT_DIR$/chatroom-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chatroom.database/chatroom.database.iml" filepath="$PROJECT_DIR$/chatroom.database/chatroom.database.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chatroom.web/chatroom.web.iml" filepath="$PROJECT_DIR$/chatroom.web/chatroom.web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sqlite-dialect/sqlite-dialect.iml" filepath="$PROJECT_DIR$/sqlite-dialect/sqlite-dialect.iml" />
+    </modules>
+  </component>
+</project>
