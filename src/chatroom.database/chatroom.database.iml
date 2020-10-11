@@ -47,6 +47,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.7.0-M1" level="project" />
     <orderEntry type="module" module-name="chatroom" />
+    <orderEntry type="module" module-name="chatroom" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="sqlite-dialect" />
   </component>
 </module>
