@@ -35,19 +35,19 @@ public class When_joining_chatroom {
         try {
             ChatMessageRepository repo = persistenceSupport.getChatMessageRepository();
 
-            List<String> messages = new ArrayList<>();
+            List<String> expectedMessages = new ArrayList<>();
             for (int i = 0; i < 21; i++) {
                 final String timeStamp = "2020-10-01T23:00:" + String.format("%02d", i) + "Z";
-                TimeFactory.nowFactory = () -> Instant.parse(timeStamp);
-                ChatMessage msg = new ChatMessage(UUID.randomUUID().toString(), TimeFactory.now(), "Luke", "Nooo! " + i);
-                messages.add(msg.toString());
+                ChatMessage msg = new ChatMessage(UUID.randomUUID().toString(), Instant.parse(timeStamp), "Luke", "Nooo! " + i);
+                expectedMessages.add(msg.toString());
                 repo.add(msg);
             }
             uow.saveChanges();
-            Collections.reverse(messages);
 
-            List<String> lastMessages = repo.query(new NewMessagesQuery(20));
-            Assertions.assertArrayEquals(messages.stream().limit(20).toArray(), lastMessages.toArray());
+            Stream<String> lastMessages = ((Stream<ChatMessage>)repo.query(new NewMessagesQuery(20))).map(x -> x.toString());
+
+            Collections.reverse(expectedMessages);
+            Assertions.assertArrayEquals(expectedMessages.stream().limit(20).toArray(), lastMessages.toArray());
         }
         finally {
             uow.close();

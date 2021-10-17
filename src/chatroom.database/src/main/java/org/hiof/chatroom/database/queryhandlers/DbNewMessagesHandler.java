@@ -15,6 +15,6 @@ public class DbNewMessagesHandler implements QueryHandler {
         org.hibernate.query.Query<ChatMessage> dbQuery = repo.getSession()
                 .createQuery("SELECT msg FROM ChatMessage msg ORDER BY msg.time DESC", ChatMessage.class)
                 .setMaxResults(20);
-        return dbQuery.stream().map(x -> x.toString()).collect(Collectors.toList());
+        return dbQuery.stream();
     }
 }

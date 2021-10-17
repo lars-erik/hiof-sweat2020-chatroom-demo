@@ -10,8 +10,6 @@ import java.util.stream.Stream;
 
 public interface ChatMessageRepository extends Repository {
     void add(ChatMessage message);
-    Stream<ChatMessage> query();
     <T> T query(Query query) throws Exception;
     ChatMessage get(String id);
-    List<String> getLastMessages();
 }

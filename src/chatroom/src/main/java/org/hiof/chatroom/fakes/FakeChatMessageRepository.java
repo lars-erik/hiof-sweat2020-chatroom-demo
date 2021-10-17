@@ -19,11 +19,6 @@ public class FakeChatMessageRepository implements ChatMessageRepository {
     }
 
     @Override
-    public Stream<ChatMessage> query() {
-        return messages.stream();
-    }
-
-    @Override
     public <T> T query(Query query) throws Exception {
         QueryHandler handler = QueryHandlerFactory.createFor(query);
         T result = (T)handler.query(query, this);
@@ -34,15 +29,4 @@ public class FakeChatMessageRepository implements ChatMessageRepository {
     public ChatMessage get(String id) {
         return messages.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
     }
-
-    public List<String> getLastMessages() {
-        long count = query().count();
-        List<String> sorted = query()
-                .sorted((x, y) -> Long.compare(y.getTime().getEpochSecond(), x.getTime().getEpochSecond()))
-                .limit(20)
-                .map(msg -> msg.toString())
-                .collect(Collectors.toList());
-        return sorted;
-    }
-
 }

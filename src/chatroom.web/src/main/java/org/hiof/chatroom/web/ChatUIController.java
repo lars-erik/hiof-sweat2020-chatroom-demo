@@ -1,9 +1,12 @@
 package org.hiof.chatroom.web;
 
 import org.hiof.chatroom.commands.SendMessageCommand;
+import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.persistence.ChatMessageRepository;
 import org.hiof.chatroom.persistence.PersistenceFactory;
+import org.hiof.chatroom.persistence.Query;
 import org.hiof.chatroom.persistence.UnitOfWork;
+import org.hiof.chatroom.queries.NewMessagesQuery;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -12,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class ChatUIController {
@@ -25,7 +30,8 @@ public class ChatUIController {
     public String chatUI(Model model) throws Exception {
         UnitOfWork unitOfWork = PersistenceFactory.Instance.createUnitOfWork();
         ChatMessageRepository chatMessageRepository = PersistenceFactory.Instance.createChatMessageRepository(unitOfWork);
-        List<String> lastMessages = chatMessageRepository.getLastMessages();
+        Query query = new NewMessagesQuery(20);
+        List<String> lastMessages = ((Stream<ChatMessage>)chatMessageRepository.query(query)).map(x -> x.toString()).collect(Collectors.toList());
         unitOfWork.close();
 
         model.addAttribute("log", lastMessages);

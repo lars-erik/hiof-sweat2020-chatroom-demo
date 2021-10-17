@@ -25,13 +25,6 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Chat
     }
 
     @Override
-    public Stream<ChatMessage> query() {
-        Session session = getSession();
-        org.hibernate.query.Query<ChatMessage> query = session.createQuery("SELECT msg FROM ChatMessage msg", ChatMessage.class);
-        return query.stream();
-    }
-
-    @Override
     public <T> T query(Query query) throws Exception {
         QueryHandler handler = QueryHandlerFactory.createFor(query);
         T result = (T)handler.query(query, this);
@@ -41,13 +34,6 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Chat
     @Override
     public ChatMessage get(String id) {
         return getSession().get(ChatMessage.class, id);
-    }
-
-    public List<String> getLastMessages() {
-        org.hibernate.query.Query<ChatMessage> query = getSession()
-                .createQuery("SELECT msg FROM ChatMessage msg ORDER BY msg.time DESC", ChatMessage.class)
-                .setMaxResults(20);
-        return query.stream().map(x -> x.toString()).collect(Collectors.toList());
     }
 
     public Session getSession() {

@@ -4,11 +4,13 @@ import org.hiof.chatroom.commands.SendMessageCommand;
 import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.notification.NotificationServiceFactory;
 import org.hiof.chatroom.persistence.ChatMessageRepository;
+import org.hiof.chatroom.queries.NewMessagesQuery;
 import org.hiof.chatroom.support.PersistenceSupport;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
 import java.time.Instant;
+import java.util.stream.Stream;
 
 public class When_sending_messages {
     protected PersistenceSupport persistenceSupport;
@@ -72,7 +74,12 @@ public class When_sending_messages {
 
     private ChatMessage getLastMessage() {
         ChatMessageRepository repo = persistenceSupport.getChatMessageRepository();
-        ChatMessage last = repo.query().skip(repo.query().count() - 1).findFirst().get();
+        ChatMessage last = null;
+        try {
+            last = ((Stream<ChatMessage>)repo.query(new NewMessagesQuery(1))).findFirst().get();
+        } catch (Exception e) {
+            return null;
+        }
         return last;
     }
 
