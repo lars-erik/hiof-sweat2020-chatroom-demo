@@ -27,7 +27,6 @@ public class When_joining_chatroom {
     public void initialize_persistence() throws Exception {
         persistenceSupport = new PersistenceSupport();
 
-        QueryHandlerFactory.register(NewMessagesQuery.class, FakeNewMessagesHandler.class);
     }
 
     @Test

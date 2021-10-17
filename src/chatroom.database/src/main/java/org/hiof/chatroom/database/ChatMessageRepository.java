@@ -1,8 +1,10 @@
 package org.hiof.chatroom.database;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hiof.chatroom.core.ChatMessage;
+import org.hiof.chatroom.persistence.Query;
+import org.hiof.chatroom.persistence.QueryHandler;
+import org.hiof.chatroom.persistence.QueryHandlerFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +32,13 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Chat
     }
 
     @Override
+    public <T> T query(Query query) throws Exception {
+        QueryHandler handler = QueryHandlerFactory.createFor(query);
+        T result = (T)handler.query(query, this);
+        return result;
+    }
+
+    @Override
     public ChatMessage get(String id) {
         return getSession().get(ChatMessage.class, id);
     }
@@ -41,7 +50,7 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Chat
         return query.stream().map(x -> x.toString()).collect(Collectors.toList());
     }
 
-    private Session getSession() {
+    public Session getSession() {
         return unitOfWork.getSession();
     }
 }
