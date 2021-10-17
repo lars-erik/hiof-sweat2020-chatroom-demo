@@ -1,9 +1,12 @@
 package org.hiof.chatroom.core;
 
+import org.hiof.chatroom.fakes.FakeNewMessagesHandler;
 import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.persistence.ChatMessageRepository;
 import org.hiof.chatroom.persistence.PersistenceFactory;
+import org.hiof.chatroom.persistence.QueryHandlerFactory;
 import org.hiof.chatroom.persistence.UnitOfWork;
+import org.hiof.chatroom.queries.NewMessagesQuery;
 import org.hiof.chatroom.support.PersistenceSupport;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class When_joining_chatroom {
     protected PersistenceSupport persistenceSupport;
@@ -22,6 +26,8 @@ public class When_joining_chatroom {
     @BeforeEach
     public void initialize_persistence() throws Exception {
         persistenceSupport = new PersistenceSupport();
+
+        QueryHandlerFactory.register(NewMessagesQuery.class, FakeNewMessagesHandler.class);
     }
 
     @Test
@@ -41,7 +47,7 @@ public class When_joining_chatroom {
             uow.saveChanges();
             Collections.reverse(messages);
 
-            List<String> lastMessages = repo.getLastMessages();
+            List<String> lastMessages = repo.query(new NewMessagesQuery(20));
             Assertions.assertArrayEquals(messages.stream().limit(20).toArray(), lastMessages.toArray());
         }
         finally {
