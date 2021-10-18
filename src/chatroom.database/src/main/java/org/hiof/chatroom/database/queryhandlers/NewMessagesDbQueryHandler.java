@@ -9,7 +9,7 @@ import org.hiof.chatroom.queries.NewMessagesQuery;
 
 import java.util.stream.Stream;
 
-public class DbNewMessagesHandler implements RepositoryQueryHandler<ChatMessage> {
+public class NewMessagesDbQueryHandler implements RepositoryQueryHandler<ChatMessage> {
     @Override
     public Stream<ChatMessage> query(Query query, Repository repository) {
         NewMessagesQuery typedQuery = (NewMessagesQuery)query;

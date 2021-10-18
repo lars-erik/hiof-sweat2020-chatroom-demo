@@ -7,7 +7,7 @@ import org.hiof.chatroom.persistence.Repository;
 
 import java.util.stream.Stream;
 
-public class FakeNewMessagesHandler implements RepositoryQueryHandler<ChatMessage> {
+public class FakeNewMessagesRepoQueryHandler implements RepositoryQueryHandler<ChatMessage> {
     @Override
     public Stream<ChatMessage> query(Query query, Repository repository) {
         FakeChatMessageRepository repo = (FakeChatMessageRepository)repository;

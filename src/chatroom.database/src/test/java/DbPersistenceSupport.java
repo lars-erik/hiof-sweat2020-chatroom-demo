@@ -1,6 +1,6 @@
 import org.hibernate.query.Query;
 import org.hiof.chatroom.database.UnitOfWork;
-import org.hiof.chatroom.database.queryhandlers.DbNewMessagesHandler;
+import org.hiof.chatroom.database.queryhandlers.NewMessagesDbQueryHandler;
 import org.hiof.chatroom.persistence.PersistenceFactory;
 import org.hiof.chatroom.persistence.RepositoryQueryHandlerFactory;
 import org.hiof.chatroom.queries.NewMessagesQuery;
@@ -17,7 +17,7 @@ public class DbPersistenceSupport extends PersistenceSupport {
 
         PersistenceFactory.Instance = factory;
 
-        RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, DbNewMessagesHandler.class);
+        RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, NewMessagesDbQueryHandler.class);
 
     }
 

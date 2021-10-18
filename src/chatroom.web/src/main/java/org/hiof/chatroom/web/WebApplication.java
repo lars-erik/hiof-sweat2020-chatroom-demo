@@ -2,7 +2,7 @@ package org.hiof.chatroom.web;
 
 import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.database.DatabaseManager;
-import org.hiof.chatroom.database.queryhandlers.DbNewMessagesHandler;
+import org.hiof.chatroom.database.queryhandlers.NewMessagesDbQueryHandler;
 import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.notification.NotificationServiceFactory;
 import org.hiof.chatroom.persistence.PersistenceFactory;
@@ -22,7 +22,7 @@ public class WebApplication {
         DatabaseManager.ensureDatabase("./db/chat.db", false);
 
         PersistenceFactory.Instance = new org.hiof.chatroom.database.PersistenceFactory();
-        RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, DbNewMessagesHandler.class);
+        RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, NewMessagesDbQueryHandler.class);
 
         NotificationServiceFactory.Instance = new NotificationServiceFactory() {
             @Override

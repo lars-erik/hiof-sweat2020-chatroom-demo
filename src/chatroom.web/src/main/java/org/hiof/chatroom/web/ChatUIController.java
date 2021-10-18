@@ -27,14 +27,8 @@ public class ChatUIController {
 
     @GetMapping("/")
     public String chatUI(Model model) throws Exception {
-        Query query = new NewMessagesQuery(20);
-
-        UnitOfWork unitOfWork = PersistenceFactory.Instance.createUnitOfWork();
-        Repository<ChatMessage> chatMessageRepository = PersistenceFactory.Instance.createChatMessageRepository(unitOfWork);
-        List<String> lastMessages = chatMessageRepository.query(query).map(x -> x.toString()).collect(Collectors.toList());
-        unitOfWork.close();
-
-        model.addAttribute("log", lastMessages);
+        NewMessagesQuery query = new NewMessagesQuery(20);
+        model.addAttribute("log", query.execute());
         return "chatui";
     }
 

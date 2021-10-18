@@ -38,7 +38,7 @@ public class When_joining_chatroom {
             }
             uow.saveChanges();
 
-            Stream<String> lastMessages = repo.query(new NewMessagesQuery(20)).map(x -> x.toString());
+            List<String> lastMessages = new NewMessagesQuery(20).execute();
 
             Collections.reverse(expectedMessages);
             Assertions.assertArrayEquals(expectedMessages.stream().limit(20).toArray(), lastMessages.toArray());

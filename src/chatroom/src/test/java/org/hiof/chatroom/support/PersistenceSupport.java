@@ -1,7 +1,7 @@
 package org.hiof.chatroom.support;
 
 import org.hiof.chatroom.core.ChatMessage;
-import org.hiof.chatroom.fakes.FakeNewMessagesHandler;
+import org.hiof.chatroom.fakes.FakeNewMessagesRepoQueryHandler;
 import org.hiof.chatroom.fakes.FakePersistenceFactory;
 import org.hiof.chatroom.persistence.PersistenceFactory;
 import org.hiof.chatroom.persistence.RepositoryQueryHandlerFactory;
@@ -21,7 +21,7 @@ public class PersistenceSupport {
 
         PersistenceFactory.Instance = factory;
 
-        RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, FakeNewMessagesHandler.class);
+        RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, FakeNewMessagesRepoQueryHandler.class);
 
     }
 
