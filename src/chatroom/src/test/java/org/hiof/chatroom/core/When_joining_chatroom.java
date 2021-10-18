@@ -3,6 +3,7 @@ package org.hiof.chatroom.core;
 import org.hiof.chatroom.persistence.Repository;
 import org.hiof.chatroom.persistence.UnitOfWork;
 import org.hiof.chatroom.queries.NewMessagesQuery;
+import org.hiof.chatroom.queries.NewMessagesQueryHandler;
 import org.hiof.chatroom.support.PersistenceSupport;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,10 @@ public class When_joining_chatroom {
             }
             uow.saveChanges();
 
-            List<String> lastMessages = new NewMessagesQuery(20).execute();
+            NewMessagesQuery query = new NewMessagesQuery(20);
+            NewMessagesQueryHandler handler = new NewMessagesQueryHandler();
+
+            List<String> lastMessages = (List<String>)handler.execute(query);
 
             Collections.reverse(expectedMessages);
             Assertions.assertArrayEquals(expectedMessages.stream().limit(20).toArray(), lastMessages.toArray());

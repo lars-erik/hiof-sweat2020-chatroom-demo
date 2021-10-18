@@ -1,6 +1,7 @@
 package org.hiof.chatroom.core;
 
 import org.hiof.chatroom.commands.SendMessageCommand;
+import org.hiof.chatroom.commands.SendMessageCommandHandler;
 import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.notification.NotificationServiceFactory;
 import org.hiof.chatroom.persistence.Repository;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
 import java.time.Instant;
-import java.util.stream.Stream;
 
 public class When_sending_messages {
     protected PersistenceSupport persistenceSupport;
@@ -87,7 +87,10 @@ public class When_sending_messages {
         SendMessageCommand cmd = new SendMessageCommand();
         cmd.user = "Luke Skywalker";
         cmd.message = "This is Red Leader. We're approaching the Ison Corridor!";
-        cmd.execute();
+
+        SendMessageCommandHandler handler = new SendMessageCommandHandler();
+        handler.execute(cmd);
+
         return cmd;
     }
 }

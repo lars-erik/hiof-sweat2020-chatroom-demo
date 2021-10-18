@@ -15,16 +15,4 @@ public class NewMessagesQuery extends Query {
     public NewMessagesQuery(int limit) {
         this.limit = limit;
     }
-
-    public List<String> execute() {
-        try {
-            UnitOfWork unitOfWork = PersistenceFactory.Instance.createUnitOfWork();
-            Repository<ChatMessage> chatMessageRepository = PersistenceFactory.Instance.createChatMessageRepository(unitOfWork);
-            List<String> lastMessages = chatMessageRepository.query(this).map(x -> x.toString()).collect(Collectors.toList());
-            unitOfWork.close();
-            return lastMessages;
-        } catch (Exception e) {
-            return new ArrayList<>();
-        }
-    }
 }

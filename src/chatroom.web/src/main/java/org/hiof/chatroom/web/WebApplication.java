@@ -1,5 +1,9 @@
 package org.hiof.chatroom.web;
 
+import org.hiof.chatroom.commands.Command;
+import org.hiof.chatroom.commands.CommandHandler;
+import org.hiof.chatroom.commands.SendMessageCommand;
+import org.hiof.chatroom.commands.SendMessageCommandHandler;
 import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.database.DatabaseManager;
 import org.hiof.chatroom.database.queryhandlers.NewMessagesDbQueryHandler;
@@ -10,6 +14,8 @@ import org.hiof.chatroom.persistence.Repository;
 import org.hiof.chatroom.persistence.RepositoryQueryHandlerFactory;
 import org.hiof.chatroom.persistence.UnitOfWork;
 import org.hiof.chatroom.queries.NewMessagesQuery;
+import org.hiof.chatroom.queries.NewMessagesQueryHandler;
+import org.hiof.chatroom.queries.QueryHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -53,6 +59,24 @@ public class WebApplication {
 
         ctx.registerBean(org.hiof.chatroom.database.UnitOfWork.class);
         ctx.registerBean(org.hiof.chatroom.database.ChatMessageRepository.class);
+
+        ctx.registerBean(NewMessagesQueryHandler.class);
+        QueryDispatcher.register(NewMessagesQuery.class, NewMessagesQueryHandler.class);
+
+        ctx.registerBean(SendMessageCommandHandler.class);
+        CommandDispatcher.register(SendMessageCommand.class, SendMessageCommandHandler.class);
+
+        ctx.registerBean(QueryDispatcher.class, () ->
+            new QueryDispatcher(
+                t -> (QueryHandler)ctx.getBean(t)
+            )
+        );
+
+        ctx.registerBean(CommandDispatcher.class, () ->
+            new CommandDispatcher(
+                t -> (CommandHandler) ctx.getBean(t)
+            )
+        );
     }
 
 }
