@@ -10,16 +10,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class NewMessagesQueryHandler implements QueryHandler<NewMessagesQuery> {
+    private Repository<ChatMessage> repository;
+    private UnitOfWork unitOfWork;
+
+    public NewMessagesQueryHandler(Repository<ChatMessage> repository, UnitOfWork unitOfWork) {
+        this.repository = repository;
+        this.unitOfWork = unitOfWork;
+    }
+
     @Override
     public Object execute(NewMessagesQuery query) {
         try {
-            UnitOfWork unitOfWork = PersistenceFactory.Instance.createUnitOfWork();
-            Repository<ChatMessage> chatMessageRepository = PersistenceFactory.Instance.createChatMessageRepository(unitOfWork);
-            List<String> lastMessages = chatMessageRepository.query(query).map(x -> x.toString()).collect(Collectors.toList());
-            unitOfWork.close();
+            List<String> lastMessages = repository.query(query).map(x -> x.toString()).collect(Collectors.toList());
             return lastMessages;
         } catch (Exception e) {
             return new ArrayList<>();
+        }
+        finally {
+            unitOfWork.close();
         }
     }
 }

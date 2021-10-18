@@ -40,7 +40,7 @@ public class When_joining_chatroom {
             uow.saveChanges();
 
             NewMessagesQuery query = new NewMessagesQuery(20);
-            NewMessagesQueryHandler handler = new NewMessagesQueryHandler();
+            NewMessagesQueryHandler handler = new NewMessagesQueryHandler(repo, uow);
 
             List<String> lastMessages = (List<String>)handler.execute(query);
 

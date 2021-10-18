@@ -1,7 +1,8 @@
 import org.hibernate.query.Query;
+import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.database.UnitOfWork;
 import org.hiof.chatroom.database.queryhandlers.NewMessagesDbQueryHandler;
-import org.hiof.chatroom.persistence.PersistenceFactory;
+import org.hiof.chatroom.persistence.Repository;
 import org.hiof.chatroom.persistence.RepositoryQueryHandlerFactory;
 import org.hiof.chatroom.queries.NewMessagesQuery;
 import org.hiof.chatroom.support.PersistenceSupport;
@@ -9,26 +10,43 @@ import org.hiof.chatroom.support.PersistenceSupport;
 public class DbPersistenceSupport extends PersistenceSupport {
 
     public DbPersistenceSupport() throws Exception {
-        //DatabaseManager.ensureDatabase("./db/chat-test.db", true);
-
         factory = new org.hiof.chatroom.database.PersistenceFactory();
         setUow(factory.createUnitOfWork());
         repo = factory.createChatMessageRepository(getUnitOfWork());
 
-        PersistenceFactory.Instance = factory;
-
         RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, NewMessagesDbQueryHandler.class);
-
     }
 
     @Override
-    public void cleanup()
-    {
-        // Warning: Will not cascade delete!
-        Query query = ((UnitOfWork)uow).getSession().createQuery("DELETE FROM ChatMessage");
-        query.executeUpdate();
-        uow.saveChanges();
+    public org.hiof.chatroom.persistence.UnitOfWork getUnitOfWork() {
+        if (((UnitOfWork)uow).isClosed()) {
+            try {
+                setUow(factory.createUnitOfWork());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return uow;
+    }
 
+    @Override
+    public Repository<ChatMessage> getChatMessageRepository() {
+        if (((UnitOfWork)uow).isClosed()) {
+            return repo = factory.createChatMessageRepository(getUnitOfWork());
+        }
+        return repo;
+    }
+
+    @Override
+    public void cleanup() throws Exception {
         super.cleanup();
+
+        // Warning: Will not cascade delete!
+        UnitOfWork newUow = (UnitOfWork) factory.createUnitOfWork();
+        Query query = newUow.getSession().createQuery("DELETE FROM ChatMessage");
+        query.executeUpdate();
+        newUow.saveChanges();
+        newUow.close();
     }
 }

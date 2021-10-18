@@ -1,7 +1,12 @@
+import org.hiof.chatroom.commands.SendMessageCommandHandler;
 import org.hiof.chatroom.core.ChatMessage;
+import org.hiof.chatroom.database.DatabaseManager;
 import org.hiof.chatroom.database.PersistenceFactory;
 import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.notification.NotificationServiceFactory;
+import org.hiof.chatroom.persistence.Repository;
+import org.hiof.chatroom.persistence.UnitOfWork;
+import org.hiof.chatroom.queries.NewMessagesQueryHandler;
 import org.hiof.chatroom.web.ChatUIController;
 import org.hiof.chatroom.web.CommandDispatcher;
 import org.hiof.chatroom.web.NotificationDispatcher;
@@ -26,39 +31,31 @@ public class Persisting_in_web_module {
 
     @BeforeEach
     public void reset_database() {
-        java.io.File dbFile = new File("./db/chat.db");
-        dbFile.delete();
+        DatabaseManager.ensureDatabase("./db/chat.db", true);
 
         model = createModel();
     }
 
     @Test
     public void stores_message() throws Exception {
-        PersistenceFactory.Instance = new PersistenceFactory();
-        NotificationServiceFactory.Instance = new NotificationServiceFactory() {
-            @Override
-            public NotificationService getService() {
-                return new NotificationService() {
-                    @Override
-                    public void notifyNewMessage(ChatMessage message) {
-                    }
-                };
-            }
-        };
+        NotificationService notificationService = message -> {};
 
-        ChatUIController ctrlr = new ChatUIController(new NotificationDispatcher(new SimpMessagingTemplate(new MessageChannel() {
-            @Override
-            public boolean send(Message<?> message, long l) {
-                return true;
-            }
-        })), new QueryDispatcher(null), new CommandDispatcher(null)); //
+        PersistenceFactory persistenceFactory = new PersistenceFactory();
+        final UnitOfWork uow = persistenceFactory.createUnitOfWork();
+        final Repository<ChatMessage> repo = persistenceFactory.createChatMessageRepository(uow);
+
+        ChatUIController ctrlr = new ChatUIController(
+                new NotificationDispatcher(new SimpMessagingTemplate((message, l) -> true)),
+                new QueryDispatcher((x) -> new NewMessagesQueryHandler(repo, uow)),
+                new CommandDispatcher((x) -> new SendMessageCommandHandler(repo, uow, notificationService))
+        );
 
         ctrlr.postMessage("Luke", "Noooo");
 
-        org.hiof.chatroom.persistence.UnitOfWork uow = PersistenceFactory.Instance.createUnitOfWork();
-        org.hiof.chatroom.persistence.Repository<ChatMessage> repo = PersistenceFactory.Instance.createChatMessageRepository(uow);
+        UnitOfWork uow2 = persistenceFactory.createUnitOfWork();
+        Repository<ChatMessage> repo2 = persistenceFactory.createChatMessageRepository(uow2);
 
-        ChatMessage msg = repo.all().findFirst().get();
+        ChatMessage msg = repo2.all().findFirst().get();
         Assertions.assertEquals("Luke", msg.getUser());
         Assertions.assertEquals("Noooo", msg.getMessage());
     }

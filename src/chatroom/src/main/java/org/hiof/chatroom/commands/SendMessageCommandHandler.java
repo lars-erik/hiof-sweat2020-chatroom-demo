@@ -2,6 +2,7 @@ package org.hiof.chatroom.commands;
 
 import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.core.TimeFactory;
+import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.notification.NotificationServiceFactory;
 import org.hiof.chatroom.persistence.PersistenceFactory;
 import org.hiof.chatroom.persistence.Repository;
@@ -10,31 +11,38 @@ import org.hiof.chatroom.persistence.UnitOfWork;
 import java.util.UUID;
 
 public class SendMessageCommandHandler implements CommandHandler {
+    private Repository<ChatMessage> repository;
+    private UnitOfWork unitOfWork;
+    private NotificationService notificationService;
+
+    public SendMessageCommandHandler(Repository<ChatMessage> repository, UnitOfWork unitOfWork, NotificationService notificationService) {
+        this.repository = repository;
+        this.unitOfWork = unitOfWork;
+        this.notificationService = notificationService;
+    }
+
     @Override
-    public void execute(Command command) {
+    public void execute(Command command) throws Exception {
         execute((SendMessageCommand) command);
     }
 
-    private void execute(SendMessageCommand command) {
+    private void execute(SendMessageCommand command) throws Exception {
         try {
-            UnitOfWork uow = PersistenceFactory.Instance.createUnitOfWork();
-            Repository<ChatMessage> repo = PersistenceFactory.Instance.createChatMessageRepository(uow);
-
             ChatMessage msg = new ChatMessage();
             msg.setId(UUID.randomUUID().toString());
             msg.setUser(command.user);
             msg.setMessage(command.message);
             msg.setTime(TimeFactory.nowFactory.call());
 
-            repo.add(msg);
-            uow.saveChanges();
-            uow.close();
+            repository.add(msg);
+            unitOfWork.saveChanges();
 
-            NotificationServiceFactory.Instance.getService().notifyNewMessage(msg);
+            notificationService.notifyNewMessage(msg);
         }
         catch (Exception ex) {
-            System.out.println("This didn't go well.");
-            // TODO: Implement logging. 👼
+            throw ex;
+        } finally {
+            unitOfWork.close();
         }
     }
 }

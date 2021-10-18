@@ -17,12 +17,9 @@ public class PersistenceSupport {
     public PersistenceSupport() throws Exception {
         factory = new FakePersistenceFactory();
         setUow(factory.createUnitOfWork());
-        repo = factory.createChatMessageRepository(getUnitOfWork());
-
-        PersistenceFactory.Instance = factory;
+        repo = factory.createChatMessageRepository(uow);
 
         RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, FakeNewMessagesRepoQueryHandler.class);
-
     }
 
     public Repository<ChatMessage> getChatMessageRepository() {
@@ -37,7 +34,7 @@ public class PersistenceSupport {
         this.uow = uow;
     }
 
-    public void cleanup() {
+    public void cleanup() throws Exception {
         uow.close();
     }
 }

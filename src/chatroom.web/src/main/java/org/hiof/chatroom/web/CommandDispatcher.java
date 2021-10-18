@@ -19,7 +19,7 @@ public class CommandDispatcher {
         handlers.put(commandClass, handlerClass);
     }
 
-    public void execute(Command command) {
+    public void execute(Command command) throws Exception {
         Class<?> handlerType = handlers.get(command.getClass());
         CommandHandler handler = createInstance.apply(handlerType);
         handler.execute(command);

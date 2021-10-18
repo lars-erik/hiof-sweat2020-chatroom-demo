@@ -51,7 +51,11 @@ public class ChatUIController {
         SendMessageCommand cmd = new SendMessageCommand();
         cmd.user = userName;
         cmd.message = message;
-        commandDispatcher.execute(cmd);
+        try {
+            commandDispatcher.execute(cmd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

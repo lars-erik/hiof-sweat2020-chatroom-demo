@@ -5,6 +5,7 @@ import org.hiof.chatroom.commands.SendMessageCommandHandler;
 import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.notification.NotificationServiceFactory;
 import org.hiof.chatroom.persistence.Repository;
+import org.hiof.chatroom.persistence.UnitOfWork;
 import org.hiof.chatroom.queries.NewMessagesQuery;
 import org.hiof.chatroom.support.PersistenceSupport;
 import org.junit.jupiter.api.*;
@@ -24,13 +25,6 @@ public class When_sending_messages {
     @BeforeEach
     public void initialize_notification() {
         notificationService = Mockito.mock(NotificationService.class);
-
-        NotificationServiceFactory.Instance = new NotificationServiceFactory() {
-            @Override
-            public NotificationService getService() {
-                return notificationService;
-            }
-        };
     }
 
     @AfterEach
@@ -39,7 +33,7 @@ public class When_sending_messages {
     }
 
     @AfterEach
-    public void cleanup_database() {
+    public void cleanup_database() throws Exception {
         persistenceSupport.cleanup();
     }
 
@@ -73,10 +67,9 @@ public class When_sending_messages {
     }
 
     private ChatMessage getLastMessage() {
-        Repository<ChatMessage> repo = persistenceSupport.getChatMessageRepository();
         ChatMessage last = null;
         try {
-            last = repo.query(new NewMessagesQuery(1)).findFirst().get();
+            last = persistenceSupport.getChatMessageRepository().query(new NewMessagesQuery(1)).findFirst().get();
         } catch (Exception e) {
             return null;
         }
@@ -88,7 +81,11 @@ public class When_sending_messages {
         cmd.user = "Luke Skywalker";
         cmd.message = "This is Red Leader. We're approaching the Ison Corridor!";
 
-        SendMessageCommandHandler handler = new SendMessageCommandHandler();
+        SendMessageCommandHandler handler = new SendMessageCommandHandler(
+            persistenceSupport.getChatMessageRepository(),
+            persistenceSupport.getUnitOfWork(),
+            notificationService
+        );
         handler.execute(cmd);
 
         return cmd;
