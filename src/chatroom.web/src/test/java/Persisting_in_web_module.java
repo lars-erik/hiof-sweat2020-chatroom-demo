@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 public class Persisting_in_web_module {
 
     @BeforeEach
@@ -84,12 +86,17 @@ public class Persisting_in_web_module {
                 return null;
             }
         };
+
+        fail("Gidder ikke endre ctor i ett sett");
+
+        /*
+
         ChatUIController ctrlr = new ChatUIController(new NotificationDispatcher(new SimpMessagingTemplate(new MessageChannel() {
             @Override
             public boolean send(Message<?> message, long l) {
                 return true;
             }
-        })));
+        })), NotificationServiceFactory.Instance.getService()); //
 
         ctrlr.postMessage("Luke", "Noooo");
 
@@ -99,5 +106,8 @@ public class Persisting_in_web_module {
         ChatMessage msg = repo.all().findFirst().get();
         Assertions.assertEquals("Luke", msg.getUser());
         Assertions.assertEquals("Noooo", msg.getMessage());
+
+
+         */
     }
 }

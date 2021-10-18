@@ -2,6 +2,7 @@ package org.hiof.chatroom.web;
 
 import org.hiof.chatroom.commands.SendMessageCommand;
 import org.hiof.chatroom.core.ChatMessage;
+import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.persistence.PersistenceFactory;
 import org.hiof.chatroom.queries.Query;
 import org.hiof.chatroom.persistence.Repository;
@@ -20,9 +21,11 @@ import java.util.stream.Collectors;
 @Controller
 public class ChatUIController {
     private NotificationDispatcher dispatcher;
+    private NotificationService notificationService;
 
-    public ChatUIController(NotificationDispatcher dispatcher) {
+    public ChatUIController(NotificationDispatcher dispatcher, NotificationService notificationService) {
         this.dispatcher = dispatcher;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/")
