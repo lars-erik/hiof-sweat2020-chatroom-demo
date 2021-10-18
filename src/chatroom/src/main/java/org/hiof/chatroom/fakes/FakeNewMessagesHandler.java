@@ -1,17 +1,15 @@
 package org.hiof.chatroom.fakes;
 
 import org.hiof.chatroom.core.ChatMessage;
-import org.hiof.chatroom.persistence.Query;
-import org.hiof.chatroom.persistence.QueryHandler;
+import org.hiof.chatroom.queries.Query;
+import org.hiof.chatroom.persistence.RepositoryQueryHandler;
 import org.hiof.chatroom.persistence.Repository;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FakeNewMessagesHandler implements QueryHandler {
+public class FakeNewMessagesHandler implements RepositoryQueryHandler<ChatMessage> {
     @Override
-    public Object query(Query query, Repository repository) {
+    public Stream<ChatMessage> query(Query query, Repository repository) {
         FakeChatMessageRepository repo = (FakeChatMessageRepository)repository;
 
         long count = repo.messages.stream().count();

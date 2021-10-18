@@ -3,18 +3,14 @@ package org.hiof.chatroom.web;
 import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.database.DatabaseManager;
 import org.hiof.chatroom.database.queryhandlers.DbNewMessagesHandler;
-import org.hiof.chatroom.fakes.FakePersistenceFactory;
 import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.notification.NotificationServiceFactory;
 import org.hiof.chatroom.persistence.PersistenceFactory;
-import org.hiof.chatroom.persistence.QueryHandlerFactory;
+import org.hiof.chatroom.persistence.RepositoryQueryHandlerFactory;
 import org.hiof.chatroom.queries.NewMessagesQuery;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.AbstractDependsOnBeanFactoryPostProcessor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 public class WebApplication {
@@ -26,7 +22,7 @@ public class WebApplication {
         DatabaseManager.ensureDatabase("./db/chat.db", false);
 
         PersistenceFactory.Instance = new org.hiof.chatroom.database.PersistenceFactory();
-        QueryHandlerFactory.register(NewMessagesQuery.class, DbNewMessagesHandler.class);
+        RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, DbNewMessagesHandler.class);
 
         NotificationServiceFactory.Instance = new NotificationServiceFactory() {
             @Override

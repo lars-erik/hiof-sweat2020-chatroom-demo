@@ -1,9 +1,9 @@
 package org.hiof.chatroom.fakes;
 
 import org.hiof.chatroom.core.ChatMessage;
-import org.hiof.chatroom.persistence.Query;
-import org.hiof.chatroom.persistence.QueryHandler;
-import org.hiof.chatroom.persistence.QueryHandlerFactory;
+import org.hiof.chatroom.queries.Query;
+import org.hiof.chatroom.persistence.RepositoryQueryHandler;
+import org.hiof.chatroom.persistence.RepositoryQueryHandlerFactory;
 import org.hiof.chatroom.persistence.Repository;
 
 import java.util.*;
@@ -24,7 +24,7 @@ public class FakeChatMessageRepository implements Repository<ChatMessage> {
 
     @Override
     public Stream<ChatMessage> query(Query query) throws Exception {
-        QueryHandler handler = QueryHandlerFactory.createFor(query);
+        RepositoryQueryHandler handler = RepositoryQueryHandlerFactory.createFor(query);
         Stream<ChatMessage> result = (Stream<ChatMessage>)handler.query(query, this);
         return result;
     }

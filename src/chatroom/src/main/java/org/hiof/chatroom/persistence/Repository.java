@@ -1,6 +1,6 @@
 package org.hiof.chatroom.persistence;
 
-import org.hiof.chatroom.core.ChatMessage;
+import org.hiof.chatroom.queries.Query;
 
 import java.util.stream.Stream;
 
