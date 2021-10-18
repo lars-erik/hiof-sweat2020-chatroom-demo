@@ -1,10 +1,8 @@
 package org.hiof.chatroom.web;
 
-import org.hiof.chatroom.commands.SendMessageCommand;
 import org.hiof.chatroom.core.ChatMessage;
+import org.hiof.chatroom.commands.SendMessageCommand;
 import org.hiof.chatroom.notification.NotificationService;
-import org.hiof.chatroom.persistence.PersistenceFactory;
-import org.hiof.chatroom.queries.Query;
 import org.hiof.chatroom.persistence.Repository;
 import org.hiof.chatroom.persistence.UnitOfWork;
 import org.hiof.chatroom.queries.NewMessagesQuery;
@@ -15,17 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Controller
 public class ChatUIController {
     private NotificationDispatcher dispatcher;
-    private NotificationService notificationService;
 
-    public ChatUIController(NotificationDispatcher dispatcher, NotificationService notificationService) {
+    public ChatUIController(NotificationDispatcher dispatcher) {
         this.dispatcher = dispatcher;
-        this.notificationService = notificationService;
     }
 
     @GetMapping("/")
