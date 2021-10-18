@@ -1,10 +1,6 @@
 package org.hiof.chatroom.core;
 
-import org.hiof.chatroom.fakes.FakeNewMessagesHandler;
-import org.hiof.chatroom.notification.NotificationService;
-import org.hiof.chatroom.persistence.ChatMessageRepository;
-import org.hiof.chatroom.persistence.PersistenceFactory;
-import org.hiof.chatroom.persistence.QueryHandlerFactory;
+import org.hiof.chatroom.persistence.Repository;
 import org.hiof.chatroom.persistence.UnitOfWork;
 import org.hiof.chatroom.queries.NewMessagesQuery;
 import org.hiof.chatroom.support.PersistenceSupport;
@@ -17,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class When_joining_chatroom {
@@ -26,14 +21,13 @@ public class When_joining_chatroom {
     @BeforeEach
     public void initialize_persistence() throws Exception {
         persistenceSupport = new PersistenceSupport();
-
     }
 
     @Test
     public void last_20_messages_are_shown() throws Exception {
         UnitOfWork uow = persistenceSupport.getUnitOfWork();
         try {
-            ChatMessageRepository repo = persistenceSupport.getChatMessageRepository();
+            Repository<ChatMessage> repo = persistenceSupport.getChatMessageRepository();
 
             List<String> expectedMessages = new ArrayList<>();
             for (int i = 0; i < 21; i++) {
@@ -44,7 +38,7 @@ public class When_joining_chatroom {
             }
             uow.saveChanges();
 
-            Stream<String> lastMessages = ((Stream<ChatMessage>)repo.query(new NewMessagesQuery(20))).map(x -> x.toString());
+            Stream<String> lastMessages = repo.query(new NewMessagesQuery(20)).map(x -> x.toString());
 
             Collections.reverse(expectedMessages);
             Assertions.assertArrayEquals(expectedMessages.stream().limit(20).toArray(), lastMessages.toArray());

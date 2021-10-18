@@ -1,6 +1,7 @@
 package org.hiof.chatroom.database;
 
-import org.hiof.chatroom.persistence.ChatMessageRepository;
+import org.hiof.chatroom.core.ChatMessage;
+import org.hiof.chatroom.persistence.Repository;
 import org.hiof.chatroom.persistence.UnitOfWork;
 
 public class PersistenceFactory extends org.hiof.chatroom.persistence.PersistenceFactory {
@@ -10,7 +11,7 @@ public class PersistenceFactory extends org.hiof.chatroom.persistence.Persistenc
     }
 
     @Override
-    public ChatMessageRepository createChatMessageRepository(UnitOfWork uow) {
+    public Repository<ChatMessage> createChatMessageRepository(UnitOfWork uow) {
         return new org.hiof.chatroom.database.ChatMessageRepository((org.hiof.chatroom.database.UnitOfWork)uow);
     }
 }

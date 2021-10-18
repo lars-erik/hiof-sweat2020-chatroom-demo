@@ -13,7 +13,7 @@ public class SendMessageCommand {
 
     public void execute() throws Exception {
         UnitOfWork uow = PersistenceFactory.Instance.createUnitOfWork();
-        ChatMessageRepository repo = PersistenceFactory.Instance.createChatMessageRepository(uow);
+        Repository<ChatMessage> repo = PersistenceFactory.Instance.createChatMessageRepository(uow);
 
         ChatMessage msg = new ChatMessage();
         msg.setId(UUID.randomUUID().toString());

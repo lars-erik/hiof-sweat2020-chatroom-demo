@@ -1,17 +1,18 @@
 package org.hiof.chatroom.support;
 
+import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.fakes.FakeNewMessagesHandler;
 import org.hiof.chatroom.fakes.FakePersistenceFactory;
-import org.hiof.chatroom.persistence.ChatMessageRepository;
 import org.hiof.chatroom.persistence.PersistenceFactory;
 import org.hiof.chatroom.persistence.QueryHandlerFactory;
+import org.hiof.chatroom.persistence.Repository;
 import org.hiof.chatroom.persistence.UnitOfWork;
 import org.hiof.chatroom.queries.NewMessagesQuery;
 
 public class PersistenceSupport {
     protected PersistenceFactory factory;
     protected UnitOfWork uow;
-    protected ChatMessageRepository repo;
+    protected Repository<ChatMessage> repo;
 
     public PersistenceSupport() throws Exception {
         factory = new FakePersistenceFactory();
@@ -24,7 +25,7 @@ public class PersistenceSupport {
 
     }
 
-    public ChatMessageRepository getChatMessageRepository() {
+    public Repository<ChatMessage> getChatMessageRepository() {
         return repo;
     }
 

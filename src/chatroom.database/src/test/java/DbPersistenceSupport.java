@@ -1,4 +1,6 @@
+import org.hibernate.query.Query;
 import org.hiof.chatroom.database.DatabaseManager;
+import org.hiof.chatroom.database.UnitOfWork;
 import org.hiof.chatroom.database.queryhandlers.DbNewMessagesHandler;
 import org.hiof.chatroom.fakes.FakeNewMessagesHandler;
 import org.hiof.chatroom.fakes.FakePersistenceFactory;
@@ -20,5 +22,16 @@ public class DbPersistenceSupport extends PersistenceSupport {
 
         QueryHandlerFactory.register(NewMessagesQuery.class, DbNewMessagesHandler.class);
 
+    }
+
+    @Override
+    public void cleanup()
+    {
+        // Warning: Will not cascade delete!
+        Query query = ((UnitOfWork)uow).getSession().createQuery("DELETE FROM ChatMessage");
+        query.executeUpdate();
+        uow.saveChanges();
+
+        super.cleanup();
     }
 }

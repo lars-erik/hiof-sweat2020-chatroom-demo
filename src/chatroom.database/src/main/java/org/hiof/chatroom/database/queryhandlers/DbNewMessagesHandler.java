@@ -5,16 +5,18 @@ import org.hiof.chatroom.database.ChatMessageRepository;
 import org.hiof.chatroom.persistence.Query;
 import org.hiof.chatroom.persistence.QueryHandler;
 import org.hiof.chatroom.persistence.Repository;
+import org.hiof.chatroom.queries.NewMessagesQuery;
 
 import java.util.stream.Collectors;
 
 public class DbNewMessagesHandler implements QueryHandler {
     @Override
     public Object query(Query query, Repository repository) {
+        NewMessagesQuery typedQuery = (NewMessagesQuery)query;
         ChatMessageRepository repo = (ChatMessageRepository)repository;
         org.hibernate.query.Query<ChatMessage> dbQuery = repo.getSession()
                 .createQuery("SELECT msg FROM ChatMessage msg ORDER BY msg.time DESC", ChatMessage.class)
-                .setMaxResults(20);
+                .setMaxResults(typedQuery.limit);
         return dbQuery.stream();
     }
 }

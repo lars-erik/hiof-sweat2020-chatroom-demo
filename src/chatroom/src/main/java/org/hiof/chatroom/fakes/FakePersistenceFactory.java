@@ -1,10 +1,11 @@
 package org.hiof.chatroom.fakes;
 
+import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.persistence.*;
 
 public class FakePersistenceFactory extends PersistenceFactory {
     UnitOfWork uow;
-    ChatMessageRepository chatMessageRepository;
+    Repository<ChatMessage> chatMessageRepository;
 
     @Override
     public UnitOfWork createUnitOfWork() {
@@ -15,7 +16,7 @@ public class FakePersistenceFactory extends PersistenceFactory {
     }
 
     @Override
-    public ChatMessageRepository createChatMessageRepository(UnitOfWork uow) {
+    public Repository<ChatMessage> createChatMessageRepository(UnitOfWork uow) {
         if (chatMessageRepository == null) {
             chatMessageRepository = new FakeChatMessageRepository();
         }

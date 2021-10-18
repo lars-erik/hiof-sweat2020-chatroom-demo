@@ -94,9 +94,9 @@ public class Persisting_in_web_module {
         ctrlr.postMessage("Luke", "Noooo");
 
         org.hiof.chatroom.persistence.UnitOfWork uow = PersistenceFactory.Instance.createUnitOfWork();
-        org.hiof.chatroom.persistence.ChatMessageRepository repo = PersistenceFactory.Instance.createChatMessageRepository(uow);
+        org.hiof.chatroom.persistence.Repository<ChatMessage> repo = PersistenceFactory.Instance.createChatMessageRepository(uow);
 
-        ChatMessage msg = repo.query().findFirst().get();
+        ChatMessage msg = repo.all().findFirst().get();
         Assertions.assertEquals("Luke", msg.getUser());
         Assertions.assertEquals("Noooo", msg.getMessage());
     }

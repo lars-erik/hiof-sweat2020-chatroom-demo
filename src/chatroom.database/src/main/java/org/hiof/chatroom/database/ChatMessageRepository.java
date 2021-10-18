@@ -6,12 +6,9 @@ import org.hiof.chatroom.persistence.Query;
 import org.hiof.chatroom.persistence.QueryHandler;
 import org.hiof.chatroom.persistence.QueryHandlerFactory;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ChatMessageRepository implements org.hiof.chatroom.persistence.ChatMessageRepository {
+public class ChatMessageRepository implements org.hiof.chatroom.persistence.Repository<ChatMessage> {
 
     private final UnitOfWork unitOfWork;
 
@@ -25,9 +22,14 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Chat
     }
 
     @Override
-    public <T> T query(Query query) throws Exception {
+    public Stream<ChatMessage> all() {
+        return getSession().createQuery("SELECT msg FROM ChatMessage msg", ChatMessage.class).stream();
+    }
+
+    @Override
+    public Stream<ChatMessage> query(Query query) throws Exception {
         QueryHandler handler = QueryHandlerFactory.createFor(query);
-        T result = (T)handler.query(query, this);
+        Stream<ChatMessage> result = (Stream<ChatMessage>)handler.query(query, this);
         return result;
     }
 
