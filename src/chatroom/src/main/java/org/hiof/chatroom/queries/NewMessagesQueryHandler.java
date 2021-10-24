@@ -1,7 +1,6 @@
 package org.hiof.chatroom.queries;
 
 import org.hiof.chatroom.core.ChatMessage;
-import org.hiof.chatroom.persistence.PersistenceFactory;
 import org.hiof.chatroom.persistence.Repository;
 import org.hiof.chatroom.persistence.UnitOfWork;
 
@@ -21,8 +20,7 @@ public class NewMessagesQueryHandler implements QueryHandler<NewMessagesQuery> {
     @Override
     public Object execute(NewMessagesQuery query) {
         try {
-            List<String> lastMessages = repository.query(query).map(x -> x.toString()).collect(Collectors.toList());
-            return lastMessages;
+            return repository.query(query).map(ChatMessage::toString).collect(Collectors.toList());
         } catch (Exception e) {
             return new ArrayList<>();
         }

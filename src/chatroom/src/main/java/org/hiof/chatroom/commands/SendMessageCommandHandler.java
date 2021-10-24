@@ -3,8 +3,6 @@ package org.hiof.chatroom.commands;
 import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.core.TimeFactory;
 import org.hiof.chatroom.notification.NotificationService;
-import org.hiof.chatroom.notification.NotificationServiceFactory;
-import org.hiof.chatroom.persistence.PersistenceFactory;
 import org.hiof.chatroom.persistence.Repository;
 import org.hiof.chatroom.persistence.UnitOfWork;
 
@@ -39,9 +37,7 @@ public class SendMessageCommandHandler implements CommandHandler {
 
             notificationService.notifyNewMessage(msg);
         }
-        catch (Exception ex) {
-            throw ex;
-        } finally {
+        finally {
             unitOfWork.close();
         }
     }
