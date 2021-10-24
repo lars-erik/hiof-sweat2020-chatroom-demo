@@ -1,7 +1,11 @@
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinitionCustomizer;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -45,6 +49,29 @@ public class IOC_demo {
         assertEquals("Hello, Mats!", client.doit("Mats"));
         assertEquals("Well hello there, Lars-Erik!", client.doit("Lars-Erik"));
     }
+
+    @Test
+    public void decoration() {
+        GenericApplicationContext ctx = new GenericApplicationContext();
+        ctx.registerBean(AbstractionFactory.class, () -> (input) -> {
+            Abstraction abstraction;
+            if (input == "Lars-Erik") {
+                abstraction = ctx.getBean(FancyConcrete.class);
+            } else {
+                abstraction = ctx.getBean(Concrete.class);
+            }
+            return new Decorated(abstraction);
+        });
+
+        ctx.registerBean(Concrete.class);
+        ctx.registerBean(FancyConcrete.class);
+        ctx.registerBean(Client.class);
+        ctx.refresh();
+
+        Client client = ctx.getBean(Client.class);
+        assertEquals("Hello, Mats! What a wonderful day it is.", client.doit("Mats"));
+        assertEquals("Well hello there, Lars-Erik! What a wonderful day it is.", client.doit("Lars-Erik"));
+    }
 }
 
 interface Abstraction {
@@ -53,6 +80,19 @@ interface Abstraction {
 
 interface AbstractionFactory {
     Abstraction get(String input);
+}
+
+class Decorated implements Abstraction {
+    public Abstraction inner;
+
+    public Decorated(Abstraction inner) {
+        this.inner = inner;
+    }
+
+    @Override
+    public String greet(String input) {
+        return String.format("%s What a wonderful day it is.", inner.greet(input));
+    }
 }
 
 class Concrete implements Abstraction {
