@@ -25,11 +25,15 @@ public class ChatUIController {
     }
 
     @GetMapping("/")
-    public String chatUI(Model model) throws Exception {
-        NewMessagesQuery query = new NewMessagesQuery(20);
-        List<String> result = queryDispatcher.query(query);
-        model.addAttribute("log", result);
+    public String chatUI(Model model) {
+        model.addAttribute("log", queryDispatcher.<List<String>>query(new NewMessagesQuery(20)));
         return "chatui";
+    }
+
+    @RequestMapping(value = "/postmessage", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public void postMessage(@RequestBody SendMessageCommand cmd) throws Exception {
+        commandDispatcher.execute(cmd);
     }
 
     @MessageMapping("/start")
@@ -41,21 +45,4 @@ public class ChatUIController {
     public void stop(StompHeaderAccessor accessor) {
         dispatcher.remove(accessor.getSessionId());
     }
-
-    @RequestMapping(value = "/postmessage", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public void postMessage(
-            @RequestParam(name="username") String userName,
-            @RequestParam(name="message") String message
-    ) {
-        SendMessageCommand cmd = new SendMessageCommand();
-        cmd.user = userName;
-        cmd.message = message;
-        try {
-            commandDispatcher.execute(cmd);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 }

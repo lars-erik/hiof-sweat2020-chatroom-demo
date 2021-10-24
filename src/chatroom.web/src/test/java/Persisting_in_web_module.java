@@ -1,3 +1,4 @@
+import org.hiof.chatroom.commands.SendMessageCommand;
 import org.hiof.chatroom.commands.SendMessageCommandHandler;
 import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.database.DatabaseManager;
@@ -46,7 +47,10 @@ public class Persisting_in_web_module {
                 new CommandDispatcher((x) -> new SendMessageCommandHandler(repo, uow, notificationService))
         );
 
-        ctrlr.postMessage("Luke", "Noooo");
+        SendMessageCommand cmd = new SendMessageCommand();
+        cmd.user = "Luke";
+        cmd.message = "Noooo";
+        ctrlr.postMessage(cmd);
 
         final UnitOfWork uow2 = new org.hiof.chatroom.database.UnitOfWork();
         final Repository<ChatMessage> repo2 = new org.hiof.chatroom.database.ChatMessageRepository(uow2);
