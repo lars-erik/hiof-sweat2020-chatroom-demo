@@ -89,10 +89,24 @@
 
         <dependency>
             <groupId>org.example</groupId>
+            <artifactId>chatroom.database</artifactId>
+            <version>1.0</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
             <artifactId>chatroom</artifactId>
             <version>1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>chatroom</artifactId>
+            <version>1.0</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

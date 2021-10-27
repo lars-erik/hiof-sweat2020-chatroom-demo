@@ -38,17 +38,25 @@ public class When_joining_chatroom {
                 repo.add(msg);
             }
             uow.saveChanges();
+            Collections.reverse(expectedMessages);
 
             NewMessagesQuery query = new NewMessagesQuery(20);
-            NewMessagesQueryHandler handler = new NewMessagesQueryHandler(repo, uow);
 
-            List<String> lastMessages = (List<String>)handler.execute(query);
-
-            Collections.reverse(expectedMessages);
-            Assertions.assertArrayEquals(expectedMessages.stream().limit(20).toArray(), lastMessages.toArray());
+            Object lastMessages = execute(uow, repo, query);
+            verify(expectedMessages, lastMessages);
         }
         finally {
             uow.close();
         }
+    }
+
+    protected void verify(List<String> expectedMessages, Object lastMessages) {
+        Assertions.assertArrayEquals(expectedMessages.stream().limit(20).toArray(), ((List<String>)lastMessages).toArray());
+    }
+
+    protected Object execute(UnitOfWork uow, Repository<ChatMessage> repo, NewMessagesQuery query) {
+        NewMessagesQueryHandler handler = new NewMessagesQueryHandler(repo, uow);
+        List<String> lastMessages = (List<String>)handler.execute(query);
+        return lastMessages;
     }
 }

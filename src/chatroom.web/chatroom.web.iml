@@ -35,8 +35,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="chatroom.database" />
-    <orderEntry type="module" module-name="sqlite-dialect" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.3.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.3.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.3.4.RELEASE" level="project" />
@@ -132,6 +130,8 @@
     <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" level="project" />
     <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.32.3.2" level="project" />
     <orderEntry type="module" module-name="sqlite-dialect" />
+    <orderEntry type="module" module-name="chatroom.database" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="chatroom" />
+    <orderEntry type="module" module-name="chatroom" scope="TEST" production-on-test="" />
   </component>
 </module>

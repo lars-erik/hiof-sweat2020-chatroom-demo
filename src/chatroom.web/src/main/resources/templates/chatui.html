@@ -36,7 +36,16 @@
         messageInput = document.getElementById("message"),
         log = document.getElementById("log");
     sendBtn.addEventListener("click", function() {
-        fetch("/postmessage?username=" + usernameInput.value + "&message=" + messageInput.value);
+        fetch("/postmessage", {
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": JSON.stringify({
+                "user": usernameInput.value,
+                "message": messageInput.value
+            })
+        });
     });
 
     let stompClient = null,

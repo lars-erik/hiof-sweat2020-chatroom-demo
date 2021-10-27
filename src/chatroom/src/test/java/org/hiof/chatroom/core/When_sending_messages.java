@@ -2,9 +2,11 @@ package org.hiof.chatroom.core;
 
 import org.hiof.chatroom.commands.SendMessageCommand;
 import org.hiof.chatroom.commands.SendMessageCommandHandler;
+import org.hiof.chatroom.fakes.FakeNewMessagesRepoQueryHandler;
 import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.notification.NotificationServiceFactory;
 import org.hiof.chatroom.persistence.Repository;
+import org.hiof.chatroom.persistence.RepositoryQueryHandlerFactory;
 import org.hiof.chatroom.persistence.UnitOfWork;
 import org.hiof.chatroom.queries.NewMessagesQuery;
 import org.hiof.chatroom.support.PersistenceSupport;
@@ -15,7 +17,7 @@ import java.time.Instant;
 
 public class When_sending_messages {
     protected PersistenceSupport persistenceSupport;
-    NotificationService notificationService;
+    protected NotificationService notificationService;
 
     @BeforeEach
     public void initialize_persistence() throws Exception {
@@ -66,17 +68,13 @@ public class When_sending_messages {
         Mockito.verify(notificationService).notifyNewMessage(Mockito.argThat(x -> expected.equals(x.toString())));
     }
 
-    private ChatMessage getLastMessage() {
+    private ChatMessage getLastMessage() throws Exception {
         ChatMessage last = null;
-        try {
-            last = persistenceSupport.getChatMessageRepository().query(new NewMessagesQuery(1)).findFirst().get();
-        } catch (Exception e) {
-            return null;
-        }
+        last = persistenceSupport.getChatMessageRepository().query(new NewMessagesQuery(1)).findFirst().get();
         return last;
     }
 
-    private SendMessageCommand sendMessage() throws Exception {
+    protected SendMessageCommand sendMessage() throws Exception {
         SendMessageCommand cmd = new SendMessageCommand();
         cmd.user = "Luke Skywalker";
         cmd.message = "This is Red Leader. We're approaching the Ison Corridor!";

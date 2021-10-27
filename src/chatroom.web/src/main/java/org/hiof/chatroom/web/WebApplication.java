@@ -6,7 +6,6 @@ import org.hiof.chatroom.commands.SendMessageCommandHandler;
 import org.hiof.chatroom.database.DatabaseManager;
 import org.hiof.chatroom.database.queryhandlers.NewMessagesDbQueryHandler;
 import org.hiof.chatroom.notification.NotificationService;
-import org.hiof.chatroom.persistence.RepositoryQueryHandler;
 import org.hiof.chatroom.persistence.RepositoryQueryHandlerFactory;
 import org.hiof.chatroom.queries.NewMessagesQuery;
 import org.hiof.chatroom.queries.NewMessagesQueryHandler;
@@ -23,27 +22,39 @@ import org.springframework.context.support.GenericApplicationContext;
 public class WebApplication {
 
     public static void main(String[] args) throws ClassNotFoundException {
-        RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, NewMessagesDbQueryHandler.class);
-        QueryDispatcher.register(NewMessagesQuery.class, NewMessagesQueryHandler.class);
-        CommandDispatcher.register(SendMessageCommand.class, SendMessageCommandHandler.class);
+        configureFactories();
 
-        final ConfigurableApplicationContext ctx = new SpringApplicationBuilder()
-                .initializers((ApplicationContextInitializer<GenericApplicationContext>) WebApplication::configure)
-                .sources(WebApplication.class)
-                .run(args);
+        runSpring(args);
 
         Class.forName("org.sqlite.JDBC");
         DatabaseManager.ensureDatabase("./db/chat.db", false);
 
     }
 
-    private static void configure(GenericApplicationContext ctx) {
+    public static ConfigurableApplicationContext runSpring(String[] args) {
+        return new SpringApplicationBuilder()
+                .initializers((ApplicationContextInitializer<GenericApplicationContext>) ctx -> configure(ctx, "request"))
+                .sources(WebApplication.class)
+                .run(args);
+    }
+
+    public static void configureFactories() {
+        RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, NewMessagesDbQueryHandler.class);
+        QueryDispatcher.register(NewMessagesQuery.class, NewMessagesQueryHandler.class);
+        CommandDispatcher.register(SendMessageCommand.class, SendMessageCommandHandler.class);
+    }
+
+    public static void configure(GenericApplicationContext ctx, String unitOfWorkScope) {
         ctx.registerBean(NotificationService.class, () -> message -> {
             NotificationDispatcher dispatcher = ctx.getBean(NotificationDispatcher.class);
             dispatcher.dispatch(message);
         });
 
-        ctx.registerBean(org.hiof.chatroom.database.UnitOfWork.class, bd -> bd.setScope("request"));
+        configureExceptNotificationService(ctx, unitOfWorkScope);
+    }
+
+    public static void configureExceptNotificationService(GenericApplicationContext ctx, String unitOfWorkScope) {
+        ctx.registerBean(org.hiof.chatroom.database.UnitOfWork.class, bd -> bd.setScope(unitOfWorkScope));
         ctx.registerBean(org.hiof.chatroom.database.ChatMessageRepository.class, WebApplication::asTransient);
 
         ctx.registerBean(NewMessagesQueryHandler.class, WebApplication::asTransient);
@@ -51,7 +62,7 @@ public class WebApplication {
 
         ctx.registerBean(QueryDispatcher.class, () ->
             new QueryDispatcher(
-                t -> (QueryHandler)ctx.getBean(t)
+                t -> (QueryHandler) ctx.getBean(t)
             )
         );
 

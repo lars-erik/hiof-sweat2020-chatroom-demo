@@ -25,20 +25,15 @@ public class SendMessageCommandHandler implements CommandHandler {
     }
 
     private void execute(SendMessageCommand command) throws Exception {
-        try {
-            ChatMessage msg = new ChatMessage();
-            msg.setId(UUID.randomUUID().toString());
-            msg.setUser(command.user);
-            msg.setMessage(command.message);
-            msg.setTime(TimeFactory.nowFactory.call());
+        ChatMessage msg = new ChatMessage();
+        msg.setId(UUID.randomUUID().toString());
+        msg.setUser(command.user);
+        msg.setMessage(command.message);
+        msg.setTime(TimeFactory.nowFactory.call());
 
-            repository.add(msg);
-            unitOfWork.saveChanges();
+        repository.add(msg);
+        unitOfWork.saveChanges();
 
-            notificationService.notifyNewMessage(msg);
-        }
-        finally {
-            unitOfWork.close();
-        }
+        notificationService.notifyNewMessage(msg);
     }
 }
