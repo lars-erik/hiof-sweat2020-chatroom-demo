@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.GenericApplicationContext;
 
 @SpringBootApplication
@@ -40,7 +41,9 @@ public class WebApplication {
 
     public static void configureFactories() {
         RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, NewMessagesDbQueryHandler.class);
+
         QueryDispatcher.register(NewMessagesQuery.class, NewMessagesQueryHandler.class);
+
         CommandDispatcher.register(SendMessageCommand.class, SendMessageCommandHandler.class);
     }
 
