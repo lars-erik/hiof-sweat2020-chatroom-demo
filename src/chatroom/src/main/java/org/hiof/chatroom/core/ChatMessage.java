@@ -30,4 +30,13 @@ public class ChatMessage {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public ChatMessage() {
+    }
+
+    public ChatMessage(String id, String user, String message) {
+        this.id = id;
+        this.user = user;
+        this.message = message;
+    }
 }

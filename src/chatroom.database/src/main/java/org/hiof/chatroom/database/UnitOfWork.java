@@ -8,17 +8,35 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.type.UUIDCharType;
+import org.hiof.chatroom.core.ChatMessage;
+import org.jinq.jpa.JinqJPAStreamProvider;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class UnitOfWork implements org.hiof.chatroom.persistence.UnitOfWork {
+
+    private final JinqJPAStreamProvider streamProvider;
+    private final EntityManager entityManager;
+
     public Session getSession() {
         return session;
     }
+    public JinqJPAStreamProvider getStreamProvider() { return streamProvider; }
+    public EntityManager getEntityManager() { return entityManager; }
 
     public UnitOfWork() throws Exception {
         this.session = getSessionFactory().openSession();
+
+        EntityManagerFactory emf = this.session.getEntityManagerFactory();
+        entityManager = emf.createEntityManager();
+        streamProvider = new JinqJPAStreamProvider(emf);
+
         this.transaction = this.session.beginTransaction();
+
     }
 
     @Override

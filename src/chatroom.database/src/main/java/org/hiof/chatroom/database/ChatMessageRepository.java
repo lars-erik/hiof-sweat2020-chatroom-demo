@@ -24,10 +24,16 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Chat
 
     @Override
     public Stream<ChatMessage> query() {
+        return unitOfWork.getStreamProvider().streamAll(unitOfWork.getEntityManager(), ChatMessage.class);
+
+        /*
         Session session = unitOfWork.getSession();
+
         Query query = session.createQuery("SELECT msg FROM ChatMessage msg");
         List<ChatMessage> msgs = query.list();
         return msgs.stream();
+
+         */
     }
 
     @Override
