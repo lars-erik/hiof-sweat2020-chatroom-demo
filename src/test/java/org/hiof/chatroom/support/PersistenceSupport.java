@@ -14,6 +14,8 @@ public class PersistenceSupport {
         factory = new FakePersistenceFactory();
         uow = factory.createUnitOfWork();
         repo = factory.createChatMessageRepository(uow);
+
+        PersistenceFactory.instance = factory;
     }
 
     public ChatMessageRepository getChatMessageRepository() {

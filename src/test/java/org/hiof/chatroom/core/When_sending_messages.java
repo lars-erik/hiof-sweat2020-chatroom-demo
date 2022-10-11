@@ -1,6 +1,7 @@
 package org.hiof.chatroom.core;
 
 import org.approvaltests.Approvals;
+import org.hiof.chatroom.commands.SendMessageCommand;
 import org.hiof.chatroom.persistence.ChatMessageRepository;
 import org.hiof.chatroom.support.PersistenceSupport;
 import org.junit.jupiter.api.*;
