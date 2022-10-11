@@ -1,8 +1,7 @@
 package org.hiof.chatroom.commands;
 
 import org.hiof.chatroom.core.ChatMessage;
-import org.hiof.chatroom.notification.NotificationService;
-import org.hiof.chatroom.notification.NotificationServiceFactory;
+import org.hiof.chatroom.notification.*;
 import org.hiof.chatroom.persistence.*;
 
 import java.util.UUID;
@@ -23,6 +22,6 @@ public class SendMessageCommand {
         repo.add(msg);
         uow.saveChanges();
 
-        NotificationServiceFactory.instance.getService().notifyNewMessages();
+        NotificationServiceFactory.instance.getService().notifyNewMessage(msg);
     }
 }

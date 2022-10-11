@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatroom</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <form onsubmit="return false;">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" name="username" id="username"/>
+        </div>
+        <div class="form-group">
+            <label for="message">Message:</label>
+            <textarea class="form-control" name="message" id="message"></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" id="sendBtn">Send</button>
+        </div>
+    </form>
+    <div id="log">
+        <pre th:each="msg: ${log}" th:text="${msg}"></pre>
+    </div>
+</div>
+
+<script type="text/javascript">
+    const sendBtn = document.getElementById("sendBtn"),
+        usernameInput = document.getElementById("username"),
+        messageInput = document.getElementById("message"),
+        log = document.getElementById("log");
+    sendBtn.addEventListener("click", function() {
+        fetch("/postmessage?username=" + usernameInput.value + "&message=" + messageInput.value);
+    });
+
+    let stompClient = null,
+        hasConnection = false;
+
+    function setConnected(connected) {
+        hasConnection = connected;
+    }
+
+    function connect() {
+        var socket = new SockJS('/gs-guide-websocket');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            setConnected(true);
+            console.log('Connected: ' + frame);
+            stompClient.send("/app/start", {});
+            stompClient.subscribe('/user/topic/chat', function (payload) {
+                let message = JSON.parse(payload.body),
+                    el = document.createElement("pre");
+                el.innerText = message.user + ": " + message.message;
+                log.insertBefore(el, log.firstChild);
+            });
+        });
+    }
+
+    function disconnect() {
+        stompClient.send("/app/stop", {});
+        if (stompClient !== null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+    connect();
+    window.addEventListener("beforeunload", disconnect);
+
+</script>
+
+</body>
+</html>
