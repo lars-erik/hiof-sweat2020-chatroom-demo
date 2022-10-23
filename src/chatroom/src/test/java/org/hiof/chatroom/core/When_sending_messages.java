@@ -13,7 +13,7 @@ public class When_sending_messages {
     NotificationService notificationService;
 
     @BeforeEach
-    public void initialize_persistence() {
+    public void initialize_persistence() throws Exception {
         persistenceSupport = new PersistenceSupport();
     }
 
@@ -30,7 +30,7 @@ public class When_sending_messages {
     }
 
     @Test
-    public void message_are_stored_in_database() {
+    public void message_are_stored_in_database() throws Exception {
         SendMessageCommand cmd = sendMessage();
         ChatMessage last = getLastMessage();
 
@@ -38,7 +38,7 @@ public class When_sending_messages {
     }
 
     @Test
-    public void notification_is_sent_to_all_users() {
+    public void notification_is_sent_to_all_users() throws Exception {
         SendMessageCommand cmd = sendMessage();
         ChatMessage last = getLastMessage();
 
@@ -51,7 +51,7 @@ public class When_sending_messages {
         return last;
     }
 
-    private SendMessageCommand sendMessage() {
+    private SendMessageCommand sendMessage() throws Exception {
         SendMessageCommand cmd = new SendMessageCommand();
         cmd.user = "Luke Skywalker";
         cmd.message = "This is Red Leader. We're approaching the Ison Corridor!";

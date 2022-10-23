@@ -10,17 +10,18 @@ public class SendMessageCommand {
     public String user;
     public String message;
 
-    public void execute() {
+    public void execute() throws Exception {
         UnitOfWork uow = PersistenceFactory.instance.createUnitOfWork();
         ChatMessageRepository repo = PersistenceFactory.instance.createChatMessageRepository(uow);
 
         ChatMessage msg = new ChatMessage();
-        msg.setId(UUID.randomUUID());
+        msg.setId(UUID.randomUUID().toString());
         msg.setUser(user);
         msg.setMessage(message);
 
         repo.add(msg);
         uow.saveChanges();
+        uow.close();
 
         NotificationServiceFactory.instance.getService().notifyNewMessage(msg);
     }

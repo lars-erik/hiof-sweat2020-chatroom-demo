@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/src/chatroom/chatroom.iml" filepath="$PROJECT_DIR$/src/chatroom/chatroom.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/chatroom.database/chatroom.database.iml" filepath="$PROJECT_DIR$/src/chatroom.database/chatroom.database.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/chatroom.web/chatroom.web.iml" filepath="$PROJECT_DIR$/src/chatroom.web/chatroom.web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/sqlite-dialect/sqlite-dialect.iml" filepath="$PROJECT_DIR$/src/sqlite-dialect/sqlite-dialect.iml" />
     </modules>
   </component>
 </project>

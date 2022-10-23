@@ -8,5 +8,5 @@ import java.util.stream.Stream;
 public interface ChatMessageRepository {
     void add(ChatMessage message);
     Stream<ChatMessage> query();
-    ChatMessage get(UUID id);
+    ChatMessage get(String id);
 }

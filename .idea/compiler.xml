@@ -6,13 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="chatroom.web" />
         <module name="chatroom" />
+        <module name="sqlite-dialect" />
+        <module name="chatroom.web" />
+        <module name="chatroom.database" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8">
+    <bytecodeTargetLevel>
       <module name="chatroom" target="8" />
-      <module name="chatroom.web" target="8" />
+      <module name="chatroom.database" target="1.8" />
+      <module name="chatroom.web" target="1.8" />
+      <module name="sqlite-dialect" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
