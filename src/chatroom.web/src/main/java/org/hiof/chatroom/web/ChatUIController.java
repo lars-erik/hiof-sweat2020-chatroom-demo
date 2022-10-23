@@ -1,9 +1,7 @@
 package org.hiof.chatroom.web;
 
 import org.hiof.chatroom.commands.SendMessageCommand;
-import org.hiof.chatroom.core.ChatMessage;
-import org.hiof.chatroom.persistence.ChatMessageRepository;
-import org.hiof.chatroom.persistence.PersistenceFactory;
+import org.hiof.chatroom.queries.LastMessagesQuery;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -11,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 public class ChatUIController {
@@ -26,24 +21,11 @@ public class ChatUIController {
 
     @GetMapping("/")
     public String chatUI(Model model) {
-        List<String> lastMessages = execute();
+        LastMessagesQuery query = new LastMessagesQuery();
+        List<String> lastMessages = query.execute();
 
         model.addAttribute("log", lastMessages);
         return "chatui";
-    }
-
-    public List<String> execute() {
-        ChatMessageRepository chatMessageRepository = PersistenceFactory.instance.createChatMessageRepository(
-                PersistenceFactory.instance.createUnitOfWork()
-        );
-        long count = chatMessageRepository.query().count();
-        List<String> lastMessages = chatMessageRepository
-                .query()
-                .skip(Math.max(count - 10, 0))
-                .map(msg -> msg.getUser() + ": " + msg.getMessage())
-                .collect(Collectors.toList());
-        Collections.reverse(lastMessages);
-        return lastMessages;
     }
 
     @MessageMapping("/start")
