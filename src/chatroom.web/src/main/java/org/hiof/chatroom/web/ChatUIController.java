@@ -26,6 +26,13 @@ public class ChatUIController {
 
     @GetMapping("/")
     public String chatUI(Model model) {
+        List<String> lastMessages = execute();
+
+        model.addAttribute("log", lastMessages);
+        return "chatui";
+    }
+
+    public List<String> execute() {
         ChatMessageRepository chatMessageRepository = PersistenceFactory.instance.createChatMessageRepository(
                 PersistenceFactory.instance.createUnitOfWork()
         );
@@ -36,9 +43,7 @@ public class ChatUIController {
                 .map(msg -> msg.getUser() + ": " + msg.getMessage())
                 .collect(Collectors.toList());
         Collections.reverse(lastMessages);
-
-        model.addAttribute("log", lastMessages);
-        return "chatui";
+        return lastMessages;
     }
 
     @MessageMapping("/start")
