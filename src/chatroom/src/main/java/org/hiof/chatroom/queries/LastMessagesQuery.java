@@ -18,10 +18,11 @@ public class LastMessagesQuery {
         long count = chatMessageRepository.query().count();
         List<String> lastMessages = chatMessageRepository
                 .query()
-                .skip(Math.max(count - 10, 0))
+                .skip(Math.max(count - 20, 0))
                 .map(msg -> msg.getUser() + ": " + msg.getMessage())
                 .collect(Collectors.toList());
         Collections.reverse(lastMessages);
         return lastMessages;
     }
+
 }

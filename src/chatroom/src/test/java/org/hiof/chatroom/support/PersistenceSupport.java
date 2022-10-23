@@ -18,6 +18,7 @@ public class PersistenceSupport {
         PersistenceFactory.instance = factory;
     }
 
+    public UnitOfWork getUnitOfWork() { return uow; }
     public ChatMessageRepository getChatMessageRepository() {
         return repo;
     }
