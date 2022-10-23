@@ -1,6 +1,6 @@
 package org.hiof.chatroom.commands;
 
-import org.hiof.chatroom.core.ChatMessage;
+import org.hiof.chatroom.core.*;
 import org.hiof.chatroom.notification.*;
 import org.hiof.chatroom.persistence.*;
 
@@ -10,7 +10,7 @@ public class SendMessageCommand {
     public String user;
     public String message;
 
-    public void execute() {
+    public void execute() throws Exception {
         UnitOfWork uow = PersistenceFactory.instance.createUnitOfWork();
         ChatMessageRepository repo = PersistenceFactory.instance.createChatMessageRepository(uow);
 
@@ -18,9 +18,11 @@ public class SendMessageCommand {
         msg.setId(UUID.randomUUID());
         msg.setUser(user);
         msg.setMessage(message);
+        msg.setTime(TimeFactory.nowFactory.call());
 
         repo.add(msg);
         uow.saveChanges();
+        uow.close();
 
         NotificationServiceFactory.instance.getService().notifyNewMessage(msg);
     }
