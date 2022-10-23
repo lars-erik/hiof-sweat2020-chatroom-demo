@@ -20,7 +20,7 @@ public class WebApplication {
         Class.forName("org.sqlite.JDBC");
         DatabaseManager.ensureDatabase("./db/chat.db");
 
-        PersistenceFactory.Instance = new org.hiof.chatroom.database.PersistenceFactory();
+        PersistenceFactory.instance = new org.hiof.chatroom.database.PersistenceFactory();
 
         PersistenceFactory.instance = new FakePersistenceFactory();
         NotificationServiceFactory.instance = new NotificationServiceFactory() {

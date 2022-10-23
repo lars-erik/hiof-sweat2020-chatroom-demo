@@ -31,8 +31,8 @@ public class Persisting_in_web_module {
 
     @Test
     public void stores_message() throws Exception {
-        PersistenceFactory.Instance = new PersistenceFactory();
-        NotificationServiceFactory.Instance = new NotificationServiceFactory() {
+        PersistenceFactory.instance = new PersistenceFactory();
+        NotificationServiceFactory.instance = new NotificationServiceFactory() {
             @Override
             public NotificationService getService() {
                 return new NotificationService() {
@@ -43,47 +43,6 @@ public class Persisting_in_web_module {
             }
         };
 
-        Model model = new Model() {
-            @Override
-            public Model addAttribute(String s, Object o) {
-                return null;
-            }
-
-            @Override
-            public Model addAttribute(Object o) {
-                return null;
-            }
-
-            @Override
-            public Model addAllAttributes(Collection<?> collection) {
-                return null;
-            }
-
-            @Override
-            public Model addAllAttributes(Map<String, ?> map) {
-                return null;
-            }
-
-            @Override
-            public Model mergeAttributes(Map<String, ?> map) {
-                return null;
-            }
-
-            @Override
-            public boolean containsAttribute(String s) {
-                return false;
-            }
-
-            @Override
-            public Object getAttribute(String s) {
-                return null;
-            }
-
-            @Override
-            public Map<String, Object> asMap() {
-                return null;
-            }
-        };
         ChatUIController ctrlr = new ChatUIController(new NotificationDispatcher(new SimpMessagingTemplate(new MessageChannel() {
             @Override
             public boolean send(Message<?> message, long l) {
@@ -93,8 +52,8 @@ public class Persisting_in_web_module {
 
         ctrlr.postMessage("Luke", "Noooo");
 
-        org.hiof.chatroom.persistence.UnitOfWork uow = PersistenceFactory.Instance.createUnitOfWork();
-        org.hiof.chatroom.persistence.ChatMessageRepository repo = PersistenceFactory.Instance.createChatMessageRepository(uow);
+        org.hiof.chatroom.persistence.UnitOfWork uow = PersistenceFactory.instance.createUnitOfWork();
+        org.hiof.chatroom.persistence.ChatMessageRepository repo = PersistenceFactory.instance.createChatMessageRepository(uow);
 
         ChatMessage msg = repo.query().findFirst().get();
         Assertions.assertEquals("Luke", msg.getUser());
