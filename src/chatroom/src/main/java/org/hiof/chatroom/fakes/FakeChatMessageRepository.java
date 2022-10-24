@@ -2,6 +2,8 @@ package org.hiof.chatroom.fakes;
 
 import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.persistence.ChatMessageRepository;
+import org.jinq.orm.stream.JinqStream;
+import org.jinq.orm.stream.NonQueryJinqStream;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -15,8 +17,8 @@ public class FakeChatMessageRepository implements ChatMessageRepository {
     }
 
     @Override
-    public Stream<ChatMessage> query() {
-        return messages.stream();
+    public JinqStream<ChatMessage> query() {
+        return new NonQueryJinqStream(messages.stream());
     }
 
     @Override

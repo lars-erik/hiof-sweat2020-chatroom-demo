@@ -20,7 +20,7 @@
         <property name="connection.password">hiofhiof</property>
 
         <!-- JDBC connection pool (use the built-in) -->
-        <property name="connection.pool_size">3</property>
+        <property name="connection.pool_size">4</property>
 
         <!-- SQL dialect -->
         <property name="dialect">org.sqlite.hibernate.dialect.SQLiteDialect</property>

@@ -61,7 +61,7 @@ public class When_sending_messages {
 
     private ChatMessage getLastMessage() {
         ChatMessageRepository repo = persistenceSupport.getChatMessageRepository();
-        ChatMessage last = repo.query().skip(repo.query().count() - 1).findFirst().get();
+        ChatMessage last = repo.query().sortedDescendingBy(x -> x.getTime()).findFirst().get();
         return last;
     }
 

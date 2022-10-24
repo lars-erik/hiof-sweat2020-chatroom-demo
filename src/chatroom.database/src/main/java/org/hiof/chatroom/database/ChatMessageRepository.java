@@ -1,12 +1,10 @@
 package org.hiof.chatroom.database;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hiof.chatroom.core.ChatMessage;
+import org.jinq.jpa.JPAJinqStream;
+import org.jinq.orm.stream.JinqStream;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 public class ChatMessageRepository implements org.hiof.chatroom.persistence.ChatMessageRepository {
 
@@ -22,11 +20,8 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Chat
     }
 
     @Override
-    public Stream<ChatMessage> query() {
-        Session session = unitOfWork.getSession();
-        Query query = session.createQuery("SELECT msg FROM ChatMessage msg");
-        List<ChatMessage> msgs = query.list();
-        return msgs.stream();
+    public JinqStream<ChatMessage> query() {
+        return unitOfWork.getStreamProvider().streamAll(unitOfWork.getEntityManager(), ChatMessage.class);
     }
 
     @Override

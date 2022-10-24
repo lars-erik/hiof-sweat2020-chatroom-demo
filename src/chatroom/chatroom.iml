@@ -10,6 +10,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.jinq:jinq-jpa:1.8.22" level="project" />
+    <orderEntry type="library" name="Maven: org.jinq:jinq-asm-rebased:1.8.22" level="project" />
+    <orderEntry type="library" name="Maven: org.jinq:api:1.8.22" level="project" />
+    <orderEntry type="library" name="Maven: org.jinq:analysis:1.8.22" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.7.0-M1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
