@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ChatUIController {
@@ -20,7 +20,7 @@ public class ChatUIController {
     }
 
     @GetMapping("/")
-    public String chatUI(Model model) {
+    public String chatUI(Model model) throws Exception {
         LastMessagesQuery query = new LastMessagesQuery();
         List<String> lastMessages = query.execute();
 
@@ -43,7 +43,7 @@ public class ChatUIController {
     public void postMessage(
             @RequestParam(name="username") String userName,
             @RequestParam(name="message") String message
-    ) {
+    ) throws Exception {
         SendMessageCommand cmd = new SendMessageCommand();
         cmd.user = userName;
         cmd.message = message;

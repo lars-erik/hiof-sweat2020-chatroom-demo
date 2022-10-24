@@ -13,7 +13,7 @@ public class When_joining_chatroom {
     PersistenceSupport persistenceSupport;
 
     @BeforeEach
-    public void initialize_persistence() {
+    public void initialize_persistence() throws Exception {
         persistenceSupport = new PersistenceSupport();
     }
 

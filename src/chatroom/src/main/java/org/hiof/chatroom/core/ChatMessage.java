@@ -54,7 +54,7 @@ public class ChatMessage {
     @Override
     public String toString() {
         return "ChatMessage{" +
-                "time='" + time.toString() + '\'' +
+                "time='" + time + '\'' +
                 ", user='" + user + '\'' +
                 ", message='" + message + '\'' +
                 '}';

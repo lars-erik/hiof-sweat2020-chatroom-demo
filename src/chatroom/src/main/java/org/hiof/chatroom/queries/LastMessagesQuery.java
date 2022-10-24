@@ -11,7 +11,7 @@ public class LastMessagesQuery {
     public LastMessagesQuery() {
     }
 
-    public List<String> execute() {
+    public List<String> execute() throws Exception {
         ChatMessageRepository chatMessageRepository = PersistenceFactory.instance.createChatMessageRepository(
                 PersistenceFactory.instance.createUnitOfWork()
         );

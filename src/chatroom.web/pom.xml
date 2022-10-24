@@ -4,13 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>chatroom.web</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <parent>
+        <groupId>org.example</groupId>
+        <artifactId>chatroom-parent</artifactId>
+        <version>1.0</version>
+    </parent>
 
+    <artifactId>chatroom.web</artifactId>
 
     <properties>
         <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -28,14 +33,6 @@
             <version>2.3.4.RELEASE</version>
         </dependency>
 
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <version>2.3.4.RELEASE</version>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -82,12 +79,20 @@
             <version>3.1.1-1</version>
         </dependency>
 
+        <!-- SQLite JDBC library -->
+
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>chatroom.database</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>chatroom</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>1.0</version>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -95,6 +100,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.1.3.RELEASE</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

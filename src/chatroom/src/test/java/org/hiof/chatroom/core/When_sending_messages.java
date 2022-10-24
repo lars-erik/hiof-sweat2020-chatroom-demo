@@ -15,7 +15,7 @@ public class When_sending_messages {
     NotificationService notificationService;
 
     @BeforeEach
-    public void initialize_persistence() {
+    public void initialize_persistence() throws Exception {
         persistenceSupport = new PersistenceSupport();
     }
 
