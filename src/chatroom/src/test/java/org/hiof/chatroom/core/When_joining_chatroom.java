@@ -10,11 +10,16 @@ import java.time.Instant;
 import java.util.*;
 
 public class When_joining_chatroom {
-    PersistenceSupport persistenceSupport;
+    protected PersistenceSupport persistenceSupport;
 
     @BeforeEach
     public void initialize_persistence() throws Exception {
         persistenceSupport = new PersistenceSupport();
+    }
+
+    @AfterEach
+    public void cleanup_database() {
+        persistenceSupport.cleanup();
     }
 
     @Test

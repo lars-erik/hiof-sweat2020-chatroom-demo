@@ -22,7 +22,7 @@ public class SendMessageCommand {
 
         repo.add(msg);
         uow.saveChanges();
-        uow.close();
+        //uow.close();
 
         NotificationServiceFactory.instance.getService().notifyNewMessage(msg);
     }

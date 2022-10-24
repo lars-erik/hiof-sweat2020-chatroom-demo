@@ -11,12 +11,17 @@ import org.mockito.Mockito;
 import java.time.Instant;
 
 public class When_sending_messages {
-    PersistenceSupport persistenceSupport;
+    protected PersistenceSupport persistenceSupport;
     NotificationService notificationService;
 
     @BeforeEach
     public void initialize_persistence() throws Exception {
         persistenceSupport = new PersistenceSupport();
+    }
+
+    @AfterEach
+    public void cleanup_database() {
+        persistenceSupport.cleanup();
     }
 
     @BeforeEach
@@ -51,7 +56,7 @@ public class When_sending_messages {
         SendMessageCommand cmd = sendMessage();
         ChatMessage last = getLastMessage();
 
-        Mockito.verify(notificationService).notifyNewMessage(last);
+        Mockito.verify(notificationService).notifyNewMessage(Mockito.argThat(x -> last.toString().equals(x.toString())));
     }
 
     private ChatMessage getLastMessage() {

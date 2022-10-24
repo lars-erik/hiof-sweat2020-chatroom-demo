@@ -6,9 +6,9 @@ import org.hiof.chatroom.persistence.PersistenceFactory;
 import org.hiof.chatroom.persistence.UnitOfWork;
 
 public class PersistenceSupport {
-    PersistenceFactory factory;
-    UnitOfWork uow;
-    ChatMessageRepository repo;
+    protected PersistenceFactory factory;
+    protected UnitOfWork uow;
+    protected ChatMessageRepository repo;
 
     public PersistenceSupport() throws Exception {
         factory = new FakePersistenceFactory();
@@ -21,5 +21,9 @@ public class PersistenceSupport {
     public UnitOfWork getUnitOfWork() { return uow; }
     public ChatMessageRepository getChatMessageRepository() {
         return repo;
+    }
+
+    public void cleanup() {
+        uow.close();
     }
 }
