@@ -1,8 +1,7 @@
 package org.hiof.chatroom.web;
 
-import org.hiof.chatroom.commands.SendMessageCommand;
-import org.hiof.chatroom.commands.SendMessageCommandHandler;
-import org.hiof.chatroom.queries.NewMessagesQuery;
+import org.hiof.chatroom.commands.*;
+import org.hiof.chatroom.queries.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ChatUIController {
@@ -25,8 +24,11 @@ public class ChatUIController {
     }
 
     @GetMapping("/")
-    public String chatUI(Model model) {
-        model.addAttribute("log", queryDispatcher.<List<String>>query(new NewMessagesQuery(20)));
+    public String chatUI(Model model) throws Exception {
+
+        List<String> lastMessages = queryDispatcher.query(new LastMessagesQuery(20));
+
+        model.addAttribute("log", lastMessages);
         return "chatui";
     }
 

@@ -1,12 +1,11 @@
 package org.hiof.chatroom.persistence;
 
-import org.hiof.chatroom.queries.Query;
+import org.jinq.orm.stream.JinqStream;
 
-import java.util.stream.Stream;
+import java.util.UUID;
 
 public interface Repository<T> {
     void add(T message);
-    Stream<T> all();
-    Stream<T> query(Query query) throws Exception;
-    T get(String id);
+    JinqStream<T> query();
+    T get(UUID id);
 }

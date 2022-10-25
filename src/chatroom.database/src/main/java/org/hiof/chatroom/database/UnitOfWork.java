@@ -8,18 +8,22 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.type.UUIDCharType;
+import org.jinq.jpa.JinqJPAStreamProvider;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.UUID;
 
 public class UnitOfWork implements org.hiof.chatroom.persistence.UnitOfWork {
 
-    public Session getSession() {
-        return session;
-    }
-    public Boolean isClosed() {return isClosed;}
 
     public UnitOfWork() throws Exception {
         this.session = getSessionFactory().openSession();
+
+        EntityManagerFactory emf = this.session.getEntityManagerFactory();
+        entityManager = emf.createEntityManager();
+        streamProvider = new JinqJPAStreamProvider(emf);
+
         this.transaction = this.session.beginTransaction();
     }
 
@@ -36,7 +40,19 @@ public class UnitOfWork implements org.hiof.chatroom.persistence.UnitOfWork {
         isClosed = true;
     }
 
+    public Session getSession() {
+        return session;
+    }
+
+    public Boolean isClosed() {return isClosed;}
+
+    public JinqJPAStreamProvider getStreamProvider() { return streamProvider; }
+
+    public EntityManager getEntityManager() { return entityManager; }
+
     private Boolean isClosed = false;
+    private final JinqJPAStreamProvider streamProvider;
+    private final EntityManager entityManager;
     private final Session session;
     private Transaction transaction;
 

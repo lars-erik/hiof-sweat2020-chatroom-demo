@@ -1,14 +1,14 @@
 import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.core.When_joining_chatroom;
 import org.hiof.chatroom.database.DatabaseManager;
-import org.hiof.chatroom.notification.NotificationService;
 import org.hiof.chatroom.persistence.Repository;
 import org.hiof.chatroom.persistence.UnitOfWork;
-import org.hiof.chatroom.queries.NewMessagesQuery;
+import org.hiof.chatroom.queries.LastMessagesQuery;
 import org.hiof.chatroom.web.ChatUIController;
 import org.hiof.chatroom.web.NotificationDispatcher;
 import org.hiof.chatroom.web.WebApplication;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.GenericApplicationContext;
@@ -44,7 +44,13 @@ public class When_joining_chatroom_web extends When_joining_chatroom {
     }
 
     @Override
-    protected Object execute(UnitOfWork uow, Repository<ChatMessage> repo, NewMessagesQuery query) {
+    @Test
+    public void last_20_messages_are_shown() throws Exception {
+        super.last_20_messages_are_shown();
+    }
+
+    @Override
+    protected Object execute(Repository<ChatMessage> repo, LastMessagesQuery query) throws Exception {
         ChatUIController controller = ctx.getBean(ChatUIController.class);
         Model model = new ConcurrentModel();
         controller.chatUI(model);

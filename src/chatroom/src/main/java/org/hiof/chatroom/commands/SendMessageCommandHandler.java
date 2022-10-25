@@ -26,7 +26,7 @@ public class SendMessageCommandHandler implements CommandHandler {
 
     private void execute(SendMessageCommand command) throws Exception {
         ChatMessage msg = new ChatMessage();
-        msg.setId(UUID.randomUUID().toString());
+        msg.setId(UUID.randomUUID());
         msg.setUser(command.user);
         msg.setMessage(command.message);
         msg.setTime(TimeFactory.nowFactory.call());

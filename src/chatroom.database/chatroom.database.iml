@@ -5,9 +5,7 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
-        <datasource-mapping>
-          <factory-entry name="chatroom.database" />
-        </datasource-mapping>
+        <datasource-mapping />
         <naming-strategy-map />
       </configuration>
     </facet>
@@ -42,11 +40,35 @@
     <orderEntry type="library" name="Maven: org.jvnet.staxex:stax-ex:1.8" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" level="project" />
     <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.32.3.2" level="project" />
+    <orderEntry type="library" name="Maven: org.jinq:jinq-jpa:1.8.22" level="project" />
+    <orderEntry type="library" name="Maven: org.jinq:jinq-asm-rebased:1.8.22" level="project" />
+    <orderEntry type="library" name="Maven: org.jinq:api:1.8.22" level="project" />
+    <orderEntry type="library" name="Maven: org.jinq:analysis:1.8.22" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.7.0-M1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.7.0-M1" level="project" />
     <orderEntry type="module" module-name="chatroom" />
+    <orderEntry type="library" name="Maven: com.approvaltests:approvaltests:18.4.0" level="project" />
+    <orderEntry type="library" name="Maven: com.approvaltests:approvaltests-util:18.4.0" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.mail:javax.mail:1.6.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.12.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-xstream:3.18.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-support:3.18.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-api:3.18.2" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.activation:jakarta.activation-api:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-management-api:3.18.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-util:3.18.2" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.36" level="project" />
+    <orderEntry type="library" name="Maven: com.thoughtworks.xstream:xstream:1.4.19" level="project" />
+    <orderEntry type="library" name="Maven: io.github.x-stream:mxparser:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: xmlpull:xmlpull:1.1.3.1" level="project" />
+    <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.jettison:jettison:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.woodstox:woodstox-core-asl:4.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.woodstox:stax2-api:3.1.4" level="project" />
     <orderEntry type="module" module-name="chatroom" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="sqlite-dialect" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-junit-jupiter:3.5.13" level="project" />

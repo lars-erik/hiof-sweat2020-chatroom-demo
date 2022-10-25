@@ -1,20 +1,13 @@
 package org.hiof.chatroom.core;
 
-import org.hiof.chatroom.persistence.Repository;
-import org.hiof.chatroom.persistence.UnitOfWork;
-import org.hiof.chatroom.queries.NewMessagesQuery;
-import org.hiof.chatroom.queries.NewMessagesQueryHandler;
-import org.hiof.chatroom.support.PersistenceSupport;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.approvaltests.Approvals;
+import org.hiof.chatroom.persistence.*;
+import org.hiof.chatroom.queries.*;
+import org.hiof.chatroom.support.*;
+import org.junit.jupiter.api.*;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Stream;
+import java.util.*;
 
 public class When_joining_chatroom {
     protected PersistenceSupport persistenceSupport;
@@ -22,6 +15,11 @@ public class When_joining_chatroom {
     @BeforeEach
     public void initialize_persistence() throws Exception {
         persistenceSupport = new PersistenceSupport();
+    }
+
+    @AfterEach
+    public void cleanup_database() throws Exception {
+        persistenceSupport.cleanup();
     }
 
     @Test
@@ -33,29 +31,25 @@ public class When_joining_chatroom {
             List<String> expectedMessages = new ArrayList<>();
             for (int i = 0; i < 21; i++) {
                 final String timeStamp = "2020-10-01T23:00:" + String.format("%02d", i) + "Z";
-                ChatMessage msg = new ChatMessage(UUID.randomUUID().toString(), Instant.parse(timeStamp), "Luke", "Nooo! " + i);
+                ChatMessage msg = new ChatMessage(UUID.randomUUID(), Instant.parse(timeStamp), "Luke", "Nooo! " + i);
                 expectedMessages.add(msg.toString());
                 repo.add(msg);
             }
             uow.saveChanges();
             Collections.reverse(expectedMessages);
 
-            NewMessagesQuery query = new NewMessagesQuery(20);
+            LastMessagesQuery query = new LastMessagesQuery(20);
 
-            Object lastMessages = execute(uow, repo, query);
-            verify(expectedMessages, lastMessages);
+            List<String> lastMessages = (List<String>)execute(repo, query);
+            Approvals.verifyAll("Messages", lastMessages);
         }
         finally {
             uow.close();
         }
     }
 
-    protected void verify(List<String> expectedMessages, Object lastMessages) {
-        Assertions.assertArrayEquals(expectedMessages.stream().limit(20).toArray(), ((List<String>)lastMessages).toArray());
-    }
-
-    protected Object execute(UnitOfWork uow, Repository<ChatMessage> repo, NewMessagesQuery query) {
-        NewMessagesQueryHandler handler = new NewMessagesQueryHandler(repo, uow);
+    protected Object execute(Repository<ChatMessage> repo, LastMessagesQuery query) throws Exception {
+        LastMessagesQueryHandler handler = new LastMessagesQueryHandler(repo);
         List<String> lastMessages = (List<String>)handler.execute(query);
         return lastMessages;
     }

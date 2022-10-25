@@ -6,8 +6,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(classes={Concrete.class})
-@ExtendWith(SpringExtension.class)
 public class IOC_demo {
 
     @Test

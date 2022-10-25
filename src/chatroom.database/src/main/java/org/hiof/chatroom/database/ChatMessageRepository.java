@@ -1,12 +1,9 @@
 package org.hiof.chatroom.database;
 
-import org.hibernate.Session;
 import org.hiof.chatroom.core.ChatMessage;
-import org.hiof.chatroom.queries.Query;
-import org.hiof.chatroom.persistence.RepositoryQueryHandler;
-import org.hiof.chatroom.persistence.RepositoryQueryHandlerFactory;
+import org.jinq.orm.stream.JinqStream;
 
-import java.util.stream.Stream;
+import java.util.UUID;
 
 public class ChatMessageRepository implements org.hiof.chatroom.persistence.Repository<ChatMessage> {
 
@@ -18,27 +15,16 @@ public class ChatMessageRepository implements org.hiof.chatroom.persistence.Repo
 
     @Override
     public void add(ChatMessage message) {
-        getSession().save(message);
+        unitOfWork.getSession().save(message);
     }
 
     @Override
-    public Stream<ChatMessage> all() {
-        return getSession().createQuery("SELECT msg FROM ChatMessage msg", ChatMessage.class).stream();
+    public JinqStream<ChatMessage> query() {
+        return unitOfWork.getStreamProvider().streamAll(unitOfWork.getEntityManager(), ChatMessage.class);
     }
 
     @Override
-    public Stream<ChatMessage> query(Query query) throws Exception {
-        RepositoryQueryHandler handler = RepositoryQueryHandlerFactory.createFor(query);
-        Stream<ChatMessage> result = (Stream<ChatMessage>)handler.query(query, this);
-        return result;
-    }
-
-    @Override
-    public ChatMessage get(String id) {
-        return getSession().get(ChatMessage.class, id);
-    }
-
-    public Session getSession() {
-        return unitOfWork.getSession();
+    public ChatMessage get(UUID id) {
+        return unitOfWork.getSession().get(ChatMessage.class, id);
     }
 }

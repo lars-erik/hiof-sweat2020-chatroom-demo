@@ -4,11 +4,9 @@ import org.hiof.chatroom.commands.CommandHandler;
 import org.hiof.chatroom.commands.SendMessageCommand;
 import org.hiof.chatroom.commands.SendMessageCommandHandler;
 import org.hiof.chatroom.database.DatabaseManager;
-import org.hiof.chatroom.database.queryhandlers.NewMessagesDbQueryHandler;
 import org.hiof.chatroom.notification.NotificationService;
-import org.hiof.chatroom.persistence.RepositoryQueryHandlerFactory;
-import org.hiof.chatroom.queries.NewMessagesQuery;
-import org.hiof.chatroom.queries.NewMessagesQueryHandler;
+import org.hiof.chatroom.queries.LastMessagesQuery;
+import org.hiof.chatroom.queries.LastMessagesQueryHandler;
 import org.hiof.chatroom.queries.QueryHandler;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -16,7 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.GenericApplicationContext;
 
 @SpringBootApplication
@@ -40,9 +37,7 @@ public class WebApplication {
     }
 
     public static void configureFactories() {
-        RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, NewMessagesDbQueryHandler.class);
-
-        QueryDispatcher.register(NewMessagesQuery.class, NewMessagesQueryHandler.class);
+        QueryDispatcher.register(LastMessagesQuery.class, LastMessagesQueryHandler.class);
 
         CommandDispatcher.register(SendMessageCommand.class, SendMessageCommandHandler.class);
     }
@@ -60,7 +55,7 @@ public class WebApplication {
         ctx.registerBean(org.hiof.chatroom.database.UnitOfWork.class, bd -> bd.setScope(unitOfWorkScope));
         ctx.registerBean(org.hiof.chatroom.database.ChatMessageRepository.class, WebApplication::asTransient);
 
-        ctx.registerBean(NewMessagesQueryHandler.class, WebApplication::asTransient);
+        ctx.registerBean(LastMessagesQueryHandler.class, WebApplication::asTransient);
         ctx.registerBean(SendMessageCommandHandler.class, WebApplication::asTransient);
 
         ctx.registerBean(QueryDispatcher.class, () ->

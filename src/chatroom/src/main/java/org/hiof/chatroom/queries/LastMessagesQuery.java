@@ -1,9 +1,9 @@
 package org.hiof.chatroom.queries;
 
-public class NewMessagesQuery extends Query {
+public class LastMessagesQuery extends Query {
     public int limit;
 
-    public NewMessagesQuery(int limit) {
+    public LastMessagesQuery(int limit) {
         this.limit = limit;
     }
 }

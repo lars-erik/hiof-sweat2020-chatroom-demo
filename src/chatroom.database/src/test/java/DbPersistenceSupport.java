@@ -2,10 +2,7 @@ import org.hibernate.query.Query;
 import org.hiof.chatroom.core.ChatMessage;
 import org.hiof.chatroom.database.ChatMessageRepository;
 import org.hiof.chatroom.database.UnitOfWork;
-import org.hiof.chatroom.database.queryhandlers.NewMessagesDbQueryHandler;
 import org.hiof.chatroom.persistence.Repository;
-import org.hiof.chatroom.persistence.RepositoryQueryHandlerFactory;
-import org.hiof.chatroom.queries.NewMessagesQuery;
 import org.hiof.chatroom.support.PersistenceSupport;
 
 public class DbPersistenceSupport extends PersistenceSupport {
@@ -14,8 +11,6 @@ public class DbPersistenceSupport extends PersistenceSupport {
         UnitOfWork uow = new UnitOfWork();
         setUow(uow);
         repo = new ChatMessageRepository(uow);
-
-        RepositoryQueryHandlerFactory.register(NewMessagesQuery.class, NewMessagesDbQueryHandler.class);
     }
 
     @Override
@@ -43,9 +38,12 @@ public class DbPersistenceSupport extends PersistenceSupport {
     public void cleanup() throws Exception {
         super.cleanup();
 
-        // Warning: Will not cascade delete!
+        emptyDatabase();
+    }
+
+    public static void emptyDatabase() throws Exception {
         UnitOfWork newUow = new UnitOfWork();
-        Query query = newUow.getSession().createQuery("DELETE FROM ChatMessage");
+        Query query = newUow.getSession().createSQLQuery("DELETE FROM ChatMessages");
         query.executeUpdate();
         newUow.saveChanges();
         newUow.close();
