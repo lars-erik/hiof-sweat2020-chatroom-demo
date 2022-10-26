@@ -25,6 +25,11 @@ public class When_sending_messages {
         notificationService = Mockito.mock(NotificationService.class);
     }
 
+    @BeforeEach
+    public void initialize_time() {
+        TimeFactory.nowFactory = () -> Instant.parse("2020-10-01T23:59:59Z");
+    }
+
     @AfterEach
     public void reset_time() {
         TimeFactory.reset();
@@ -37,8 +42,6 @@ public class When_sending_messages {
 
     @Test
     public void message_are_stored_in_database() throws Exception {
-        TimeFactory.nowFactory = () -> Instant.parse("2020-10-01T23:59:59Z");
-
         SendMessageCommand cmd = sendMessage();
         ChatMessage last = getLastMessage();
 
